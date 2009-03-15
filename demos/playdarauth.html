@@ -6,7 +6,9 @@
 </head>
 <body>
     <script>
-    window.top.Playdar.last.auth_callback(window.location.hash.replace('#', ''));
+    if (window.opener) {
+        window.opener.Playdar.last.auth_callback(window.location.hash.replace('#', ''));
+    }
     </script>
 </body>
 </html>

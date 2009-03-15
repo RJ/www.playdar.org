@@ -212,14 +212,16 @@ DEMO.playdar = new Playdar({
         var text;
         if (detected) {
             text = "<b style='color:green;'>Playdar ready<\/b>";
-            DEMO.parse_hash();
-            DEMO.setup_event_handlers();
         } else {
             text = "<b style='color:red;'>Playdar unavailable<\/b><br\/>You need Playdar, the music content resolver, installed and running. See <a href=\"http:\/\/www.playdar.org\/\">www.playdar.org<\/a>.";
         }
         $('playdar_stat').innerHTML = text;
     },
-    results: DEMO.results_handler
+    results: DEMO.results_handler,
+    auth: function () {
+        DEMO.parse_hash();
+        DEMO.setup_event_handlers();
+    }
 });
 DEMO.playdar.receiver_url = "http:\/\/www.playdar.org\/demos\/playdarauth.html";
 
