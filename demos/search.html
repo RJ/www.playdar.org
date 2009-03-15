@@ -207,23 +207,28 @@ var DEMO = {
 };
 
 // Setup Playdar and Sound Manager
-DEMO.playdar = new Playdar({
-    stat_complete: function (detected) {
-        var text;
-        if (detected) {
-            text = "<b style='color:green;'>Playdar ready<\/b>";
-        } else {
-            text = "<b style='color:red;'>Playdar unavailable<\/b><br\/>You need Playdar, the music content resolver, installed and running. See <a href=\"http:\/\/www.playdar.org\/\">www.playdar.org<\/a>.";
+DEMO.playdar = new Playdar(
+    {
+        receiverurl: "http:\/\/playdar\/demos\/playdarauth.html",
+        website: "http:\/\/playdar\/demos\/",
+        name: "Playdar Demos"
+    }, {
+        stat_complete: function (detected) {
+            var text;
+            if (detected) {
+                text = "<b style='color:green;'>Playdar ready<\/b>";
+            } else {
+                text = "<b style='color:red;'>Playdar unavailable<\/b><br\/>You need Playdar, the music content resolver, installed and running. See <a href=\"http:\/\/www.playdar.org\/\">www.playdar.org<\/a>.";
+            }
+            $('playdar_stat').innerHTML = text;
+        },
+        results: DEMO.results_handler,
+        auth: function () {
+            DEMO.parse_hash();
+            DEMO.setup_event_handlers();
         }
-        $('playdar_stat').innerHTML = text;
-    },
-    results: DEMO.results_handler,
-    auth: function () {
-        DEMO.parse_hash();
-        DEMO.setup_event_handlers();
     }
-});
-DEMO.playdar.receiver_url = "http:\/\/www.playdar.org\/demos\/playdarauth.html";
+);
 
 soundManager.url = '\/static\/soundmanager2_flash9.swf';
 soundManager.flashVersion = 9;

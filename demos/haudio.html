@@ -98,17 +98,24 @@ var results_handler = function (response, finalanswer) {
     }
 };
 
-var playdar = new Playdar({
-    stat_complete: function (detected) {
-        var text;
-        if (detected) {
-            text = "<b style='color:green;'>Playdar ready</b>";
-        } else {
-            text = "<b style='color:red;'>Playdar unavailable</b><br/>You need Playdar, the music content resolver, installed and running. See <a href=\"http://www.playdar.org/\">www.playdar.org</a>.";
+var playdar = new Playdar(
+    {
+        receiverurl: "http:\/\/playdar\/demos\/playdarauth.html",
+        website: "http:\/\/playdar\/demos\/",
+        name: "Playdar Demos"
+    }, {
+        stat_complete: function (detected) {
+            var text;
+            if (detected) {
+                text = "<b style='color:green;'>Playdar ready</b>";
+            } else {
+                text = "<b style='color:red;'>Playdar unavailable</b><br/>You need Playdar, the music content resolver, installed and running. See <a href=\"http://www.playdar.org/\">www.playdar.org</a>.";
+            }
+            $('playdar_stat').update(text);
+        },
+        results: results_handler,
+        auth: function () {
         }
-        $('playdar_stat').update(text);
-    },
-    results: results_handler
 });
 window.onload = function() {
     playdar.init();
