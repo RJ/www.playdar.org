@@ -9,7 +9,7 @@ This demo isn't really about microformats. It uses a super-simple hAudio impleme
 to represent tracks, but you could write a custom parser to find elements on any site
 that represent artist/track names.
 </p>
-<input type="button" value="Microformats Go!" onclick="go_microformats()" />
+<input type="button" value="Microformats Go!" id="gomicroformats" onclick="go_microformats()" disabled="disabled" />
 <ul>
     <li>
         <div class="haudio">
@@ -115,6 +115,7 @@ var playdar = new Playdar(
         },
         results: results_handler,
         auth: function () {
+            $('gomicroformats').disabled = false;
         }
 });
 window.onload = function() {

@@ -8,22 +8,22 @@
 <fieldset>
 <legend>Track Resolver - Specify artist and track name to (hopefully) find an exact match</legend>
 artist:
-<input type="text" id="artist" name="artist" value=""/>
-<input type="hidden" id="album"  name="album" value=""/>
+<input type="text" id="artist" name="artist" value="" />
+<input type="hidden" id="album"  name="album" value="" />
 track:
-<input type="text" id="track"  name="track" value=""/>
-<input type="submit" value="Resolve!" id="resolveSubmit"/>
+<input type="text" id="track"  name="track" value="" />
+<input type="submit" value="Resolve!" id="resolveSubmit" disabled="disabled" />
 <img src="/static/spinner.gif" id="resolveProgress" style="display: none; vertical-align: middle; margin-left: 5px;" />
 &nbsp; &nbsp;
 </fieldset>
 </form>
 
-<h3>Search Results <span style="background-color:lightyellow; padding: 3px;" id="numresultsspan">0</span></h3>
-<div id="resultsdiv">
+<div id="resultsdiv" style="display: none;">
     <span style="float:right; font-size:9px;">
         <a href="#" id="recheckResults">re-check</a>
         <a href="#" id="clearResults">clear</a>
     </span>
+    <h3 style="margin: 10px 0 5px 0;">Search Results <span style="background-color:lightyellow; padding: 3px;" id="numresultsspan">0</span></h3>
     <table style="width:100%; font-size:85%;" id="resultstbl"><tr style="font-weight: bold;">
         <td>Score</td> 
         <td style="width:25px;"> </td>
@@ -167,6 +167,8 @@ var DEMO = {
     },
     
     setup_event_handlers: function () {
+        $('resolveSubmit').disabled = false;
+        $('resultsdiv').show();
         $('resultstbl').observe('click', function (e) {
             var target = e.element();
             if (target.match('a.play')) {
@@ -224,8 +226,8 @@ DEMO.playdar = new Playdar(
         },
         results: DEMO.results_handler,
         auth: function () {
-            DEMO.parse_hash();
             DEMO.setup_event_handlers();
+            DEMO.parse_hash();
         }
     }
 );
