@@ -10,11 +10,17 @@ to represent tracks, but you could write a custom parser to find elements on any
 that represent artist/track names.
 </p>
 <input type="button" value="Microformats Go!" id="gomicroformats" onclick="go_microformats()" disabled="disabled" />
-<ul>
+<ul id="tracks">
     <li>
         <div class="haudio">
            <span class="contributor">Rick Astley</span> -
            <span class="fn">Never Gonna Give You Up</span>
+        </div>
+    </li>
+    <li>
+        <div class="haudio">
+           <span class="contributor">Weezer</span> -
+           <span class="fn">Undone - The Sweater Song</span>
         </div>
     </li>
     <li>
@@ -77,7 +83,7 @@ that represent artist/track names.
 
 </ul>
 
-
+<script type="text/javascript" src="/static/soundmanager2-nodebug-jsmin.js"></script>
 <script type="text/javascript">
 // create a custom playdar callback that will handle results for this query:
 var results_handler = function (response, finalanswer) {
@@ -90,8 +96,9 @@ var results_handler = function (response, finalanswer) {
         }
         // update status element:
         $(response.qid).className = 'playdar_found';
-        var swfstr = "<object height=\"17\" width=\"17\"><embed src=\"/static/player.swf?&song_url=" + playdar.get_stream_url(response.results[0].sid) + "\" height=\"17\" width=\"17\"></embed></object>";
-        $(response.qid).innerHTML = swfstr + " <a href=\"#\" title=\""+tt+"\">" + response.results.length + "</a>";
+        
+        var sound = playdar.register_stream(response.results[0]);
+        $(response.qid).innerHTML = "<a href=\"#\" title=\""+tt+"\" class=\"playbutton\">" + response.results.length + "<span style=\"display: none;\">" + response.results[0].sid + "</span></a>";
     } else if (finalanswer) {
         $(response.qid).className = 'playdar_notfound';
         $(response.qid).innerHTML = ':(';
@@ -118,11 +125,23 @@ var playdar = new Playdar(
             $('gomicroformats').disabled = false;
         }
 });
-window.onload = function() {
+soundManager.url = '\/static\/soundmanager2_flash9.swf';
+soundManager.flashVersion = 9;
+soundManager.onload = function () {
+    playdar.soundmanager = soundManager;
     playdar.init();
 };
 
 function go_microformats() {
+    $('tracks').observe('click', function (e) {
+        var el = e.element();
+        if (el.match('a.playbutton')) {
+            e.stop();
+            var sid = el.down('span').innerHTML;
+            playdar.play_stream(sid);
+        }
+    });
+    
     var mkstatuselem = function (id) {
         var d = document.createElement('span');
         d.id = id;
