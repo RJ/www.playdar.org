@@ -47,11 +47,11 @@ GM_wait(); // wait for playdar.js to load.
 
 function setup_playdar () {
     var playdar = Playdar.create({
-        not_detected: null,
-        stat_complete: function (detected) {
-            if (detected) {
-                insert_play_buttons(playdar);
-            }
+        name: "Last.fm Greasemonkey",
+        website: "http://www.playdar.org/demos/"
+    }, {
+        auth: function () {
+            insert_play_buttons(playdar);
         }
     });
     soundManager.url = 'http://' + playdar_web_host + '/static/soundmanager2_flash9.swf';
