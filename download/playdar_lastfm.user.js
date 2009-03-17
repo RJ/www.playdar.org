@@ -47,7 +47,8 @@ GM_wait(); // wait for playdar.js to load.
 
 function setup_playdar () {
     var playdar = Playdar.create({
-        name: "Last.fm Greasemonkey"
+        name: "Last.fm Greasemonkey",
+        website: "http://www.playdar.org/demos/"
     }, {
         auth: function () {
             insert_play_buttons(playdar);
