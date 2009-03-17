@@ -2,20 +2,26 @@
 
 <h2>Search Demo</h2>
 <!--#include virtual="demolist.html" -->
+
 <div class="box" id="playdar_stat">Checking for local Playdar service...</div>
 
 <form action="" id="searchForm">
-<fieldset>
-<legend>Track Resolver - Specify artist and track name to (hopefully) find an exact match</legend>
-artist:
-<input type="text" id="artist" name="artist" value="" />
-<input type="hidden" id="album"  name="album" value="" />
-track:
-<input type="text" id="track"  name="track" value="" />
-<input type="submit" value="Resolve!" id="resolveSubmit" disabled="disabled" />
-<img src="/static/spinner.gif" id="resolveProgress" style="display: none; vertical-align: middle; margin-left: 5px;" />
-&nbsp; &nbsp;
-</fieldset>
+    <fieldset>
+        <legend>Track Resolver - Specify artist and track name to (hopefully) find an exact match</legend>
+        
+        artist:
+        <input type="text" id="artist" name="artist" value="" />
+        
+        <!-- album:
+        <input type="hidden" id="album"  name="album" value="" /> -->
+        
+        track:
+        <input type="text" id="track"  name="track" value="" />
+        
+        <input type="submit" value="Resolve!" id="resolveSubmit" disabled="disabled" />
+        
+        <img src="/static/spinner.gif" id="resolveProgress" style="display: none; vertical-align: middle; margin-left: 5px;" />
+    </fieldset>
 </form>
 
 <div id="resultsdiv" style="display: none;">
@@ -209,26 +215,25 @@ var DEMO = {
 };
 
 // Setup Playdar and Sound Manager
-DEMO.playdar = new Playdar(
-    {
-        receiverurl: "http:\/\/www.playdar.org\/demos\/playdarauth.html",
-        website: "http:\/\/www.playdar.org\/demos\/",
-        name: "Playdar Demos"
-    }, {
-        stat_complete: function (detected) {
-            var text;
-            if (detected) {
-                text = "<b style='color:green;'>Playdar ready<\/b>";
-            } else {
-                text = "<b style='color:red;'>Playdar unavailable<\/b><br\/>You need Playdar, the music content resolver, installed and running. See <a href=\"http:\/\/www.playdar.org\/\">www.playdar.org<\/a>.";
-            }
-            $('playdar_stat').innerHTML = text;
-        },
-        results: DEMO.results_handler,
-        auth: function () {
-            DEMO.setup_event_handlers();
-            DEMO.parse_hash();
+DEMO.playdar = new Playdar({
+    receiverurl: "http:\/\/www.playdar.org\/demos\/playdarauth.html",
+    website: "http:\/\/www.playdar.org\/demos\/",
+    name: "Playdar Demos"
+}, {
+    stat: function (detected) {
+        var text;
+        if (detected) {
+            text = "<b style='color:green;'>Playdar ready<\/b>";
+        } else {
+            text = "<b style='color:red;'>Playdar unavailable<\/b><br\/>You need Playdar, the music content resolver, installed and running. See <a href=\"http:\/\/www.playdar.org\/\">www.playdar.org<\/a>.";
         }
+        $('playdar_stat').innerHTML = text;
+    },
+    auth: function () {
+        DEMO.setup_event_handlers();
+        DEMO.parse_hash();
+    },
+    results: DEMO.results_handler
 });
 
 soundManager.url = '\/static\/soundmanager2_flash9.swf';

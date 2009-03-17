@@ -6,39 +6,38 @@
 <p>
     Here's how you use it:
 </p>
-<pre><code>var handlers = {
-    stat_complete: function (detected) {
+<pre><code>var auth_details = {
+    name: "Playdar Documentation",
+    website: "http://www.playdar.org/js.html"
+};
+var handlers = {
+    stat: function (detected) {
         if (detected) {
             alert('Playdar detected');
         } else {
-            alert('Playdar unavailable');
+            alert('Playdar unavailabled');
         }
+    },
+    auth: function () {
+        alert('Access to Playdar authorised');
     }
 };
 
-var playdar = new Playdar(handlers);
+var playdar = new Playdar(auth_details, handlers);
 
 playdar.init();
 </code></pre>
 <p>
-    This will setup a <code>Playdar</code> instance with a status handler.
+    This will setup a <code>Playdar</code> instance with <code>stat</code> and <code>auth</code> handlers.
 </p>
 <p>
-    The <code>init()</code> method checks for a running Playdar service and calls the status handler accordingly.
+    The <code>init()</code> method checks for a running Playdar service. The <code>stat</code> handler is then triggered and if Playdar is detected a status bar appears at the bottom of the window. A user is then able to allow a domain to make use of Playdar. After user authorisation, the <code>auth</code> handler is triggered and you can start querying Playdar.
 </p>
-<p>
-    There are also two default handlers that fire for the <code>detected</code> and <code>not_detected</code> events. These display a Playdar status message at the foot of the viewport by default, but you can provide your own or override them by setting them to <code>null</code>:
-</p>
-<pre><code>var playdar = new Playdar({
-    detected: function (version) {
-        alert("Playdar available at version: " + version);
-    },
-    not_detected: null
-});
 
-// Another way of setting these handlers
-playdar.register_handler('not_detected', null);
-</code></pre>
+<h3>Advanced authorisation</h3>
+<p>
+    If you'd like to streamline the auth process, you can include a <code>receiverurl</code> in the <code>auth_details</code> object. This should be the URL to the <a href="/demos/playdarauth.html">playdarauth.html</a> file hosted on your domain that receives messages through the location hash and passes it back to a <code>window.opener</code>. An auth token will be sent to this URL after user authorisation so that Playdar can set an auth cookie on your domain.
+</p>
 
 <h3>Resolving content</h3>
 <p>
@@ -63,7 +62,7 @@ playdar.register_results_handler(results_handler);
 playdar.resolve("Weezer", "Pinkerton", "Getchoo");
 </code></pre>
 <p>
-    Note: You can alternatively register the results handler in the <code>new Playdar()</code> constructor, just include it in the <code>handlers</code> object as <code>results</code> along with the status handlers.
+    Note: You can alternatively register the results handler in the <code>new Playdar()</code> constructor, just include it in the <code>handlers</code> object as <code>results</code> along with <code>stat</code> and <code>auth</code>. All handlers passed into the constructor will be passed through <code>register_results_handler</code> internally.
 </p>
 <p>
     The <code>results</code> handler takes two arguments:
