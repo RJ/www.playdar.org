@@ -36,6 +36,17 @@ apt-get install \
     port install cmake boost ossp-uuid uriparser taglib git-core
 </pre>
 
+<h4>Windows</h4>
+<p>
+We've been building on Windows with Visual Studio 8. Other versions will probably work too. 
+<br/>
+You'll need to find the deps yourself (suggest getting boost from boostpro.com). 
+<br/>
+A project file is in the repo.
+<br/>
+Ask in our IRC channel if you need help.
+</p>
+
 <h4>Running Playdar</h4>
 <p>
 Check the INSTALL.txt, make sure you run from the daemon dir so ./plugins and ./www exist. Create the database the first time by doing "sqlite3 ./collection.db &lt; etc/schema.sql"
@@ -54,6 +65,7 @@ These <i>will</i> be outdated. Visit the irc channel (Freenode, <a href='irc://i
 <s><a href="playdar-mac-0.1.0.zip">playdar-mac-0.1.0.zip</a></s>
 
 <h4>Windows</h4>
+<b>Probably broken now, since we added auth to the website demos, and this build doesnt support auth yet (fixed soon)</b> <br/>
 <a href="http://denness.net/PlaydarInstallWin-3.exe">Playdar Installer</a> (NSIS installer by <a href="http://laurie.denness.net">lozzd</a>)<br/>
 <p>
 NB: windows installer comes with the normal daemon, and a wrapper app:
