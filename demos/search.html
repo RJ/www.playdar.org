@@ -172,6 +172,10 @@ var DEMO = {
         DEMO.playdar.resolve(art, alb, trk);
     },
     
+    disable: function () {
+        $('resolveSubmit').disabled = true;
+        $('resultsdiv').hide();
+    },
     setup_event_handlers: function () {
         $('resolveSubmit').disabled = false;
         $('resultsdiv').show();
@@ -232,6 +236,9 @@ DEMO.playdar = new Playdar({
     auth: function () {
         DEMO.setup_event_handlers();
         DEMO.parse_hash();
+    },
+    clear_auth: function () {
+        DEMO.disable();
     },
     results: DEMO.results_handler
 });
