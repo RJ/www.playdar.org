@@ -58,7 +58,6 @@ var DEMO = {
             onpause: DEMO.set_play_text,
             onresume: DEMO.set_pause_text,
             onstop: function () {
-                this.setPosition(1);
                 DEMO.set_play_text.apply(this);
             },
             onfinish: function () {
