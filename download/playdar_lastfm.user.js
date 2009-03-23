@@ -96,7 +96,7 @@ function insert_play_buttons (playdar) {
 
 function resolve_links (playdar, results_handler) {
     var links = unsafeWindow.$$('a');
-    var link_regex = new RegExp(/^\/music\/(.+)\/(.+)\/(.+)/);
+    var link_regex = new RegExp(/^\/music\/(.+)\/([^+]+)\/([^+]+)/);
     for (var i = 0; i < links.length; i++) {
         // Only match links in the /music path
         var path = links[i].pathname;
