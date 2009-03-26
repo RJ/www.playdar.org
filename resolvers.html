@@ -1,43 +1,62 @@
 <!--#set var="title" value="Playdar - Music Content Resolving Framework" --><!--#include virtual="/inc/header.html" -->
 <h2>Playdar Content Resolving Framework</h2>
 <p>
-The Playdar scanner creates a database of your "local library", ie music 
-files that you have on your computer. It also maintains a text search index 
-capable of fuzzy searching. You search for "Radiohed" it finds "Radiohead".
-This is all stored in an sqlite database, with a custom ngram fuzzy-search implementation.
+Playdar has an asynchronous cascading resolver pipeline. Resolvers with the highest weighting are queried first, and the search is quickly passed on to other resolvers in the chain until a match is found. As soon as a query is "solved", the pipeline is aborted.
 </p>
 <p>
-Fundamental to the design of Playdar is a pluggable, asynchronous content-
-resolving framework. The following resolvers are already working:
-<ul>
-<li>
-  <strong>Local library resolver</strong> - uses the fuzzy search index as mentioned above.
-  If the song exists on your computer, this plugin finds it instantly.
-  (Already works; sqlite with custom ngram indexing)
-</li>
-<li>
-  <strong>Local area network resolver</strong> - find other Playdar installs on the LAN.
-  This has the same restrictions as iTunes Shared Libraries - it will only work on your 
-  home network or office network if there are no firewalls in the way.
-  (Already works; UDP multicast)
-</li>
-<li>
-  <strong>Remote Playdar connector</strong> - give it an IP:port of a remote computer running
-  Playdar and you can resolve content from that machine too (eg: work~home). I'm using this over
-  SSH tunnels at the moment to hook up home-work.
-  (Already works; uses the Playdar HTTP API on remote machine directly)
-</li>
-<li>
-  <strong>Gateway Plugin</strong> - Will spawn another binary/script, and pipe queries to it via stdin, and expect results from stdout.
-  This means you can write resolver plugins in any language or shell script, provided you can parse and output JSON. 
-  There is a (somewhat crappy) example php script which is capable of resolving one hardcoded track from magnatune.com.
-</li>
-</ul>
+Resolver plugins are loaded into the pipeline with a <b>weight</b> and <b>target time</b>. 
+
+The weight is an int between 1-100, and signifies a preference; the most reliable and fastest resolver has a weight of 100 (ie the one that matches files on your hard disk).
 </p>
+<p>
+The target time is a millisecond value that the resolver will probably have found results in, if any exist. If a query is still not solved after the target time has elapsed, the query is dispatched to the resolver with the next highest weight. 
+</p>
+<p>
+Results are still valid if reported after the targettime, it's simply used to decide when to hit up the next resolver. 
+This helps cut down on spam. There's no point in querying the entire internet if you find a result on your hard disk.
+</p>
+<p>
+Resolvers with equal weights are dispatched to in parallel, and the smallest targettime of resolvers at that weight is used to decide when to dispatch the query to the next resolver(s).
+</p>
+
+<h3>Default Resolver Pipeline</h3>
+<p>
+Currently the resolver pipeline look like this:
+<table>
+<tr style="font-weight:bold;"><td>Resolver &nbsp; &nbsp; </td><td>Target Time &nbsp; </td><td>Weight</td></tr>
+<tr><td>Local Library</td><td>15ms</td><td>100</td></tr>
+<tr><td>Local Area Network</td><td>50ms</td><td>99</td></tr>
+<tr><td>Demo PHP Script</td><td>20ms</td><td>80</td></tr>
+<tr><td>Darknet</td><td>3000ms</td><td>50</td></tr>
+</table>
+</p>
+<p>
+You can check how your resolver pipeline is configured by loading the Playdar web interface in your browser once you have it installed. Edit the config file to override the default settings reported by the resolver plugins.
+</p>
+<p>
+The LAN resolver uses UDP multicast on your home/office network, and will audomatically find other Playdar installs. If you install Playdar on two machines at home or in the office, it should just work - you'll be able to play songs from the other machine. 
+</p>
+<p>
+The Demo PHP Resolver is just there to illustrate how you can write resolvers in any scripting language. It is hardcoded to just match one song, and its main purpose is as a tutorial.
+</p>
+<p>
+The Darknet resolver makes tcp connection to IP and port pairs you give it via the web interface. It's early days, but already you can use this to play content from remote machines over the internet.
+</p>
+
+<h3>Write your own Resolver Plugin</h3>
+<p>
+Writing additional resolver plugins is easy. You have two options:
+<ul>
+<li>C++ dynamically loaded libraries, such as <a href="http://github.com/RJ/playdar/tree/master/playdar-daemon/resolvers/demo">this simple C++ resolver</a>.</li>
+<li>Any scripting language or other program can be spawned as an external process, which Playdar talks to by writing to stdin and reading stdout. <a href="http://github.com/RJ/playdar/blob/master/playdar-daemon/etc/demo-resolver.php">demo resolver PHP script</a></li>
+</ul>
+Consider joining the mailing list or IRC if you are writing a resolver, we'd love to hear about it.
+</p>
+
 
 <h3>Other resolver plugins...</h3>
 <p>
-What other sources can you think of to resolve music from? You can make a plugin using C++ that will load into Playdar directly, or in a language of your choice if you use the Gateway plugin and handle queries from stdin.
+What other sources can you think of to resolve music from? 
 </p>
 <p>
 Here are some ideas:
@@ -47,14 +66,10 @@ Here are some ideas:
     <li>Got a Rhapsody account? A resolver could use their API to play from Rhapsody</li>
     <li>iTunes shared libraries (not sure if this is possible due to silly encryption apple added?)</li>
     <li>UPnP Media Devices</li>
+    <li>Seeqpod API</li>
     <li>Any online service that has a search/streaming API</li>
     <li><b>Your idea here</b></li>
 </ul>
-</p>
-
-<h3>Write your own Resolver Plugin</h3>
-<p>
-Writing resolver plugins in C++ is easy, just look at this <a href="http://github.com/RJ/playdar/tree/master/playdar-daemon/resolvers/demo">simple demo resolver</a>.
 </p>
 
 
