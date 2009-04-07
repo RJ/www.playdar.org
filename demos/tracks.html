@@ -1,0 +1,583 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Tracks</title>
+    <style>
+    /* Pallette
+       -------
+       #335507
+       #4c7a0f
+       #6ea31e
+       #92c137
+       #a8d840
+       #c0e95b
+       #d2f380
+       #e8f9bb
+       ------- */
+        body {
+            margin: 0;
+            padding: 10px 10px 10px;
+            font: normal 15px 'Helvetica', sans-serif;
+            color: #111;
+            background: #e8f9bb;
+        }
+        a img,
+        img {
+            border: 0;
+        }
+        a {
+            color: #335507;
+        }
+        
+        a#head {
+            float: right;
+            height: 50px;
+            margin-top: -10px;
+            background: #e8f9bb;
+        }
+        
+        ul#tabs {
+            float: left;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            font-size: 15px;
+        }
+        ul#tabs li {
+            float: left;
+        }
+        ul#tabs a {
+            display: block;
+            float: left;
+            padding: 15px;
+            text-decoration: none;
+        }
+        ul#tabs a:hover {
+            background: #d2f380;
+        }
+        ul#tabs li.current a {
+            background: #fff;
+            color: #111;
+        }
+        
+        #content {
+            clear: left;
+            padding: 15px;
+            background: #fff;
+        }
+        #content p {
+            margin: 10px 0;
+        }
+        
+        ul.trackList {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        ul.trackList li {
+            border-top: 1px solid #d2f380;
+            font-size: 18px;
+        }
+        ul.trackList > li:first-child {
+            border-top: 0;
+        }
+        ul.trackList li.open {
+            border-color: #c0e95b;
+        }
+        ul.trackList a.track {
+            display: block;
+            padding: 15px;
+            text-decoration: none;
+        }
+        ul.trackList li:hover a.track {
+            background: #d2f380;
+        }
+        ul.trackList li.open a.track {
+            background: #c0e95b;
+        }
+        ul.trackList a.playlist {
+            display: block;
+            float: left;
+            visibility: hidden;
+            width: 19px;
+            background: #a8d840;
+            padding: 15px;
+            margin-right: 10px;
+            text-align: center;
+            text-decoration: none;
+        }
+        ul.trackList a.playlist:hover {
+            background: #92c137;
+        }
+        ul.trackList li:hover a.playlist,
+        ul.trackList li.open a.playlist,
+        ul.trackList li.added a.playlist {
+            visibility: visible;
+        }
+        ul.trackList a.playlist span.add,
+        ul.trackList li.added a.playlist span.remove {
+            display: inline;
+        }
+        ul.trackList li.added a.playlist span.add,
+        ul.trackList a.playlist span.remove {
+            display: none;
+        }
+        ul.trackList li.first {
+            border-top: 0;
+        }
+        .sources {
+            display: none;
+            background: #e8f9bb;
+            font-size: 15px;
+            line-height: 22px;
+        }
+        ul.trackList li.open .sources {
+            display: block;
+        }
+        #content .sources p.sourcesEmpty {
+            margin: 0;
+            padding: 10px 15px;
+            font-style: italic;
+        }
+        .sources table {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            border: 0;
+        }
+        .sources table tbody:hover {
+            cursor: default;
+        }
+        .sources table tbody:active {
+            background: #d2f380;
+        }
+        .sources table td {
+            padding: 8px 0 0 8px;
+            border-top: 1px solid #c0e95b;
+            vertical-align: top;
+            color: #4c7a0f;
+        }
+        .sources table tr.info td,
+        .sources table > tr:first-child td {
+            border-top: 0;
+        }
+        .sources table tr.info td {
+            padding-bottom: 8px;
+            color: #6ea31e;
+        }
+        .sources table td.play,
+        .sources table tr.info td.score {
+            width: 18px;
+            padding-right: 3px;
+            text-align: right;
+        }
+        .sources table tr.info td.score {
+            font-size: 11px;
+        }
+        .sources table td.time,
+        .sources table td.size {
+            width: 70px;
+            padding-right: 8px;
+        }
+        .sources table td.time,
+        .sources table td.size,
+        .sources table td.bitrate {
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <a href="/" title="Playdar - Music Content Resolver" id="head">
+        <img alt="Playdar - the Music Content Resolver" src="/static/logo_slug.gif" width="200" height="50"/>
+    </a>
+    
+    <ul id="tabs">
+        <li id="allTracksTab" class="current"><a href="#allTracks">All Tracks</a></span>
+        <li id="playlistTracksTab"><a href="#playlistTracks">Playlist</a></li>
+        <!-- <span>Perfect results</span> -->
+    </ul>
+    
+    <div id="content">
+        <div id="allTracks">
+            <ul id="queries" class="trackList">
+                <li id="qid1">
+                    <a href="#playlistTracks" class="playlist"><span class="add">+</span><span class="remove">-</span></a>
+                    <a href="#" class="track">
+                        The Beta Band - Dry the Rain
+                    </a>
+                    <div class="sources">
+                        <p class="sourcesEmpty">No sources</p>
+                    </div>
+                </li>
+                <li id="qid2">
+                    <a href="#playlistTracks" class="playlist"><span class="add">+</span><span class="remove">-</span></a>
+                    <a href="#" class="track">
+                        James Yorkston and the Athletes - Woozy With Cider
+                    </a>
+                    <div class="sources">
+                        <table cellspacing="0">
+                            <tbody>
+                                <tr class="track">
+                                    <td class="play">▸</td>
+                                    <td class="name" colspan="2">James Yorkston and the Athletes - Woozy With Cider</td>
+                                    <td class="time">4:25</td>
+                                </tr>
+                                <tr class="info">
+                                    <td class="score perfect">★</td>
+                                    <td class="source">jwheare / bogart</td>
+                                    <td class="bitrate">20 kbps</td>
+                                    <td class="size">4.23 MB</td>
+                                </tr>
+                            </tbody>
+                            <tbody>
+                                <tr class="track">
+                                    <td class="play"></td>
+                                    <td class="name" colspan="2">James Yorkston and the Athletes - Woozy With Cider</td>
+                                    <td class="time">4:50</td>
+                                </tr>
+                                <tr class="info">
+                                    <td class="score">0.8</td>
+                                    <td class="source">jwheare / bogart</td>
+                                    <td class="bitrate">192 kbps</td>
+                                    <td class="size">3.18 MB</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </li>
+                <li id="qid3">
+                    <a href="#playlistTracks" class="playlist"><span class="add">+</span><span class="remove">-</span></a>
+                    <a href="#" class="track">
+                        Flaming Lips - Yoshimi Battles the Pink Robots Pt. 1
+                    </a>
+                    <div class="sources">
+                        <p class="sourcesEmpty">No sources</p>
+                    </div>
+                </li>
+                <li id="qid4">
+                    <a href="#playlistTracks" class="playlist"><span class="add">+</span><span class="remove">-</span></a>
+                    <a href="#" class="track">
+                        Belle and Sebastian - Stay Loose
+                    </a>
+                    <div class="sources">
+                        <p class="sourcesEmpty">No sources</p>
+                    </div>
+                </li>
+                <li id="qid5">
+                    <a href="#playlistTracks" class="playlist"><span class="add">+</span><span class="remove">-</span></a>
+                    <a href="#" class="track">
+                        The Postal Service - Such Great Heights
+                    </a>
+                    <div class="sources">
+                        <p class="sourcesEmpty">No sources</p>
+                    </div>
+                </li>
+                <li id="qid6">
+                    <a href="#playlistTracks" class="playlist"><span class="add">+</span><span class="remove">-</span></a>
+                    <a href="#" class="track">
+                        Muse - Stockholm Syndrome
+                    </a>
+                    <div class="sources">
+                        <p class="sourcesEmpty">No sources</p>
+                    </div>
+                </li>
+                <li id="qid7">
+                    <a href="#playlistTracks" class="playlist"><span class="add">+</span><span class="remove">-</span></a>
+                    <a href="#" class="track">
+                        The Shins - New Slang
+                    </a>
+                    <div class="sources">
+                        <p class="sourcesEmpty">No sources</p>
+                    </div>
+                </li>
+                <li id="qid8">
+                    <a href="#playlistTracks" class="playlist"><span class="add">+</span><span class="remove">-</span></a>
+                    <a href="#" class="track">
+                        Devendra Banhart - Bluebird
+                    </a>
+                    <div class="sources">
+                        <p class="sourcesEmpty">No sources</p>
+                    </div>
+                </li>
+                <li id="qid9">
+                    <a href="#playlistTracks" class="playlist"><span class="add">+</span><span class="remove">-</span></a>
+                    <a href="#" class="track">
+                        Sigur Rós - Von
+                    </a>
+                    <div class="sources">
+                        <p class="sourcesEmpty">No sources</p>
+                    </div>
+                </li>
+                <li id="qid10">
+                    <a href="#playlistTracks" class="playlist"><span class="add">+</span><span class="remove">-</span></a>
+                    <a href="#" class="track">
+                        Quantic - Time Is The Enemy
+                    </a>
+                    <div class="sources">
+                        <p class="sourcesEmpty">No sources</p>
+                    </div>
+                </li>
+                <li id="qid11">
+                    <a href="#playlistTracks" class="playlist"><span class="add">+</span><span class="remove">-</span></a>
+                    <a href="#" class="track">
+                        Nick Cave &amp; The Bad Seeds - Get Ready for Love
+                    </a>
+                    <div class="sources">
+                        <p class="sourcesEmpty">No sources</p>
+                    </div>
+                </li>
+                <li id="qid12">
+                    <a href="#playlistTracks" class="playlist"><span class="add">+</span><span class="remove">-</span></a>
+                    <a href="#" class="track">
+                        Blur - Country House
+                    </a>
+                    <div class="sources">
+                        <p class="sourcesEmpty">No sources</p>
+                    </div>
+                </li>
+                <li id="qid13">
+                    <a href="#playlistTracks" class="playlist"><span class="add">+</span><span class="remove">-</span></a>
+                    <a href="#" class="track">
+                        Dananananaykroyd - Infinity Milk
+                    </a>
+                    <div class="sources">
+                        <p class="sourcesEmpty">No sources</p>
+                    </div>
+                </li>
+                <li id="qid14">
+                    <a href="#playlistTracks" class="playlist"><span class="add">+</span><span class="remove">-</span></a>
+                    <a href="#" class="track">
+                        Sum 41 - The Hell Song
+                    </a>
+                    <div class="sources">
+                        <p class="sourcesEmpty">No sources</p>
+                    </div>
+                </li>
+                <li id="qid15">
+                    <a href="#playlistTracks" class="playlist"><span class="add">+</span><span class="remove">-</span></a>
+                    <a href="#" class="track">
+                        Foo Fighters - Up In Arms
+                    </a>
+                    <div class="sources">
+                        <p class="sourcesEmpty">No sources</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        
+        <div id="playlistTracks" style="display: none;">
+            <p id="playlistEmpty">
+                You haven’t added anything to your playlist yet.
+            </p>
+            <ul id="playlist" class="trackList">
+                
+            </ul>
+        </div>
+    </div>
+    
+    <script src="http://www.playdar.org/static/playdar.js"></script>
+    <script>
+    
+/* 
+
+Script to gradually change background colour of an element
+
+References: 
+   http://www.37signals.com/svn/archives/000558.php
+   http://www.meyerweb.com/eric/tools/color-blend/
+
+Future work: 
+   Could change foreground, border colours
+   Transparency
+
+*/
+
+function Fade(id, startColour, endColour, count, speed, delay ) {
+
+  /* Properties */
+
+  this.id = id;                    /* id/object ref of element to fade */
+  this.startColour = startColour;  /* initial colour (3 or 6 digit) hex */
+  this.endColour = endColour;      /* final colour (3 or 6 digit) hex */
+  this.count = count;              /* No of steps to take during fade */
+  this.speed = speed;              /* Delay in ms between steps */
+  this.delay = delay;              /* Initial delay before fade begins */
+
+  if (typeof this.id == "string") {
+    this.obj = document.getElementById(id);  
+  } else {
+    this.obj = this.id;
+  }
+  this.colour = new Array();
+  this.steps = 0;
+
+  /* Methods */
+
+  this.init = init;
+  this.fade = fade;
+  this.parseColour = parseColour;
+
+  function init() {
+
+    first = this.parseColour(this.startColour, 'hex');
+    last = this.parseColour(this.endColour, 'hex');
+
+    this.colour = new Array();
+    this.colour[this.count] = this.startColour;
+    for (i=0; i<this.count; i++) {
+      temp = "rgb(";
+      temp += parseInt(first[0]+(last[0]-first[0])/this.count*i);
+      temp += ",";
+      temp += parseInt(first[1]+(last[1]-first[1])/this.count*i);
+      temp += ",";
+      temp += parseInt(first[2]+(last[2]-first[2])/this.count*i);
+      temp += ")";
+      this.colour[this.count-i] = temp;
+    }
+    this.colour[0] = this.endColour;
+
+    var thisObj = this;
+    setTimeout( function() { thisObj.fade() }, this.delay);
+
+  }
+
+  function fade() {
+      
+    if (this.count >= 0) {
+
+      this.obj.style.backgroundColor = this.colour[this.count--];
+
+      // I want to do this:
+      // setTimeout("this.fade()", init.speed);
+      // but setTimeout runs in a different thread so 'this' 
+      // is out of context. 
+      // See: http://www.faqts.com/knowledge_base/view.phtml/aid/2311
+
+      var thisObj = this;
+      setTimeout( function() { thisObj.fade() }, this.speed);
+
+    }
+  }
+
+  function parseColour(colour, t) {
+    /* From: http://www.meyerweb.com/eric/tools/color-blend/ */
+    var m = 1;
+    col = colour.replace(/[\#rgb\(]*/,'');
+    if (t == 'hex') {
+      if (col.length == 3) {
+        a = col.substr(0,1);
+        b = col.substr(1,1);
+        c = col.substr(2,1);
+        col = a + a + b + b + c + c;
+      }
+      var num = new Array(col.substr(0,2),col.substr(2,2),col.substr(4,2));
+      var base = 16;
+    } else {
+      var num = col.split(',');
+      var base = 10;
+    }
+    if (t == 'rgbp') {m = 2.55}
+    var ret = new Array(parseInt(num[0],base)*m,parseInt(num[1],base)*m,parseInt(num[2],base)*m);
+    return(ret);
+  }
+}
+
+    
+    PlaydarTracks = {
+        playlist: {}
+    };
+    
+    (function () {
+        var allTracks = document.getElementById('allTracks');
+        var playlistTracks = document.getElementById('playlistTracks');
+        var queries = document.getElementById('queries');
+        var playlist = document.getElementById('playlist');
+        var playlistEmpty = document.getElementById('playlistEmpty');
+        
+        var trackListClickHandler = function (e) {
+            var target = Playdar.getTarget(e);
+            while (target && target.nodeName != 'A') {
+                target = target.parentNode;
+            }
+            if (target) {
+                var parent = target.parentNode;
+                switch (target.className) {
+                case 'playlist':
+                    target.blur();
+                    // Get the qid from the parent list item
+                    var qid = parent.id.replace('qid', '').replace('pl', '');
+                    var queryItem = document.getElementById('qid' + qid);
+                    if (PlaydarTracks.playlist[qid]) {
+                        // Remove added class
+                        queryItem.className = queryItem.className.replace(' added', '').replace('added', '');
+                        // Remove the track item from the playlist
+                        var playlistItem = document.getElementById('pl' + qid);
+                        playlist.removeChild(playlistItem);
+                        PlaydarTracks.playlist[qid] = false;
+                        // Show message if empty
+                        var empty = true;
+                        for (q in PlaydarTracks.playlist) {
+                            if (PlaydarTracks.playlist[q] === true) {
+                                empty = false;
+                            }
+                        }
+                        if (empty) {
+                            playlistEmpty.style.display = '';
+                        }
+                    } else {
+                        // Add added class
+                        queryItem.className += ' added';
+                        // Copy the track item to the playlist
+                        var playlistItem = queryItem.cloneNode(true);
+                        playlistItem.id = 'pl' + qid;
+                        // Remove open class
+                        playlistItem.className = playlistItem.className.replace(' open', '').replace('open', '');
+                        playlist.appendChild(playlistItem);
+                        PlaydarTracks.playlist[qid] = true;
+                        // Hide empty message
+                        playlistEmpty.style.display = 'none';
+                    }
+                    var fade = new Fade('playlistTracksTab', '#c0e95b', '#e8f9bb', 15, 20, 0);
+                    fade.init();
+                    return false;
+                case 'track':
+                    target.blur();
+                    if (parent.className.match(/open/)) {
+                        parent.className = parent.className.replace(' open', '').replace('open', '');
+                    } else {
+                        parent.className += ' open';
+                    }
+                    return false;
+                default:
+                    break;
+                }
+            }
+        };
+        
+        queries.onclick = trackListClickHandler;
+        playlist.onclick = trackListClickHandler;
+        
+        var tabList = ['allTracks', 'playlistTracks'];
+        var tabs = document.getElementById('tabs');
+        tabs.onclick = function (e) {
+            var target = Playdar.getTarget(e);
+            if (target.nodeName == 'A') {
+                target.blur();
+                var tabToShow = target.hash.substr(1);
+                for (var i = 0; i < tabList.length; i++) {
+                    if (tabList[i] == tabToShow) {
+                        document.getElementById(tabList[i]).style.display = "";
+                        document.getElementById(tabList[i] + 'Tab').className = "current";
+                    } else {
+                        document.getElementById(tabList[i]).style.display = "none";
+                        document.getElementById(tabList[i] + 'Tab').className = "";
+                    }
+                }
+                return false;
+            }
+        };
+    })();
+    </script>
+</body>
+</html>
