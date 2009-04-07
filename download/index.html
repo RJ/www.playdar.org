@@ -8,7 +8,7 @@ Binary packages and installers are provided periodically.
 <h3>Building from source</h3>
 <pre>
 git clone <a href='http://github.com/RJ/playdar/tree/master'>git://github.com/RJ/playdar.git</a>
-cd playdar/playdar-daemon
+cd playdar
 less INSTALL.txt
 cd build
 cmake ..
@@ -27,6 +27,8 @@ apt-get install \
     liburiparser1 liburiparser-dev \
     libossp-uuid-dev libossp-uuid15
 </pre>
+
+Pay special attention to installing uriparser from source, as per INSTALL.txt.
 
 <h4>Mac</h4>
 <p>You need <a href='http://www.macports.org/'>MacPorts</a>:</p>
@@ -49,7 +51,7 @@ Ask in our IRC channel if you need help.
 
 <h4>Running Playdar</h4>
 <p>
-Check the INSTALL.txt, make sure you run from the daemon dir so ./plugins and ./www exist. Create the database the first time by doing "sqlite3 ./collection.db &lt; etc/schema.sql"
+Check the INSTALL.txt, make sure you run from the daemon dir so ./plugins and ./www exist. Create the database the first time by doing <strong>"sqlite3 ./collection.db &lt; etc/schema.sql"</strong>
 </p>
 
 <h3>Binaries</h3>
