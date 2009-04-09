@@ -223,8 +223,8 @@ var DEMO = {
 
 // Setup Playdar and Sound Manager
 DEMO.playdar = new Playdar({
-    receiverurl: "http:\/\/www.playdar.org\/demos\/playdarauth.html",
-    website: "http:\/\/www.playdar.org\/demos\/",
+    receiverurl: "http://<!--#echo var="domain" -->/demos/playdarauth.html",
+    website: "http://<!--#echo var="domain" -->/demos/",
     name: "Playdar Demos"
 }, {
     stat: function (detected) {
@@ -232,7 +232,7 @@ DEMO.playdar = new Playdar({
         if (detected) {
             text = "<b style='color:green;'>Playdar ready<\/b>";
         } else {
-            text = "<b style='color:red;'>Playdar unavailable<\/b><br\/>You need Playdar, the music content resolver, installed and running. See <a href=\"http:\/\/www.playdar.org\/\">www.playdar.org<\/a>.";
+            text = "<b style='color:red;'>Playdar unavailable<\/b><br\/>You need Playdar, the music content resolver, installed and running. See <a href=\"http:\/\/<!--#echo var="domain" -->\/\"><!--#echo var="domain" --><\/a>.";
         }
         $('playdar_stat').innerHTML = text;
     },
