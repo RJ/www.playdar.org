@@ -496,7 +496,7 @@ function Fade(id, startColour, endColour, count, speed, delay ) {
         var playlistEmpty = document.getElementById('playlistEmpty');
         
         var trackListClickHandler = function (e) {
-            var target = Playdar.getTarget(e);
+            var target = Playdar.Util.getTarget(e);
             while (target && target.nodeName != 'A') {
                 target = target.parentNode;
             }
@@ -561,7 +561,7 @@ function Fade(id, startColour, endColour, count, speed, delay ) {
         var tabList = ['allTracks', 'playlistTracks'];
         var tabs = document.getElementById('tabs');
         tabs.onclick = function (e) {
-            var target = Playdar.getTarget(e);
+            var target = Playdar.Util.getTarget(e);
             if (target.nodeName == 'A') {
                 target.blur();
                 var tabToShow = target.hash.substr(1);

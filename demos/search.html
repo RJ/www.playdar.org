@@ -99,7 +99,7 @@ var DEMO = {
         td = new Element('td').update(
             '<a href="' + DEMO.playdar.get_stream_url(result.sid) + '">dl<\/a> '
             + '<small>('
-            + Playdar.mmss(result.duration) + ', '
+            + Playdar.Util.mmss(result.duration) + ', '
             + result.mimetype + ', '
             + (result.size/1000000).toFixed(1) + 'MB, '
             + result.bitrate + 'Kbps)<\/small>'

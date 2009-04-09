@@ -73,7 +73,7 @@ function insert_play_buttons (playdar) {
                 var tt = "Sources: ";
                 for (var i = 0; i < response.results.length; i++) {
                     var result = response.results[i];
-                    tt += result.source + "/" + result.bitrate + "kbps/" + Playdar.mmss(result.duration) + " ";
+                    tt += result.source + "/" + result.bitrate + "kbps/" + Playdar.Util.mmss(result.duration) + " ";
                 }
                 // update status element:
                 element.style.backgroundColor = "#0a0";
@@ -149,7 +149,7 @@ function start_status (qid, link) {
 }
 
 function resolve (playdar, link, artist, track, results_handler) {
-    var qid = Playdar.generate_uuid();
+    var qid = Playdar.Util.generate_uuid();
     // add a "searching..." status :
     start_status(qid, link);
     // register results handler and resolve for this qid
