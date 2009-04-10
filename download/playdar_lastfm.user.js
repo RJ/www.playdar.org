@@ -46,7 +46,7 @@ function GM_wait() {
 GM_wait(); // wait for playdar.js to load.
 
 function setup_playdar () {
-    Playdar.create({
+    Playdar.setup({
         name: "Last.fm Greasemonkey",
         website: "http://www.playdar.org/demos/"
     }, {
