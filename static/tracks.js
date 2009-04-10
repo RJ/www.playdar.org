@@ -166,15 +166,24 @@ PlaydarTracks = {
     setResultPlaying: function () {
         var result = document.getElementById('sid' + this.sID);
         result.className = 'result playing';
+        
+        var trackItem = result.parentNode.parentNode.parentNode;
+        trackItem.className += ' playing';
     },
     setResultPaused: function () {
         var result = document.getElementById('sid' + this.sID);
         result.className = 'result paused';
+        
+        var trackItem = result.parentNode.parentNode.parentNode;
+        trackItem.className = trackItem.className.replace(' playing', '').replace('playing', '');
     },
     setResultStopped: function () {
         Playdar.player.stop_all();
         var result = document.getElementById('sid' + this.sID);
         result.className = 'result';
+        
+        var trackItem = result.parentNode.parentNode.parentNode;
+        trackItem.className = trackItem.className.replace(' playing', '').replace('playing', '');
     },
     
     build_results_table: function (response) {

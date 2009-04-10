@@ -121,8 +121,8 @@ function resolve_links (results_handler) {
             continue;
         }
         // Replace + with space
-        var artist = decodeURIComponent(urlparts[1].replace(/\+/g, " "));
-        var track  = decodeURIComponent(urlparts[3].replace(/\+/g, " "));
+        var artist = decodeURIComponent(decodeURIComponent(urlparts[1]).replace(/\+/g, " "));
+        var track  = decodeURIComponent(decodeURIComponent(urlparts[3]).replace(/\+/g, " "));
         resolve(links[i], artist, track, results_handler);
     }
 }

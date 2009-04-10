@@ -93,7 +93,8 @@
         ul.trackList li:hover a.track {
             background: #d2f380;
         }
-        ul.trackList li.open a.track {
+        ul.trackList li.open a.track,
+        ul.trackList li.playing a.track {
             background: #c0e95b;
         }
         ul.trackList a.playlist {
@@ -111,7 +112,6 @@
             background: #92c137;
         }
         ul.trackList li:hover a.playlist,
-        ul.trackList li.open a.playlist,
         ul.trackList li.added a.playlist {
             visibility: visible;
         }
@@ -149,9 +149,7 @@
         .sources table tbody:hover {
             cursor: default;
         }
-        .sources table tbody:active {
-            background: #d2f380;
-        }
+        .sources table tbody:active,
         .sources table tbody.playing {
             background: #d2f380;
         }
