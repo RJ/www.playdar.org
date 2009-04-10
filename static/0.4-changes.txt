@@ -1,7 +1,23 @@
+Setup
+=====
+Instead of:
+var playdar = new Playdar();
+playdar.soundmanager = soundManager
+playdar.init();
+
+Use this:
+Playdar.setup();
+Playdar.player.soundmanager = soundManager
+Playdar.client.init();
+
+Soundmanager wrapper in player namespace now
+============================================
 Playdar.player.play_stream
 Playdar.player.stop_all
 Playdar.player.register_stream
 
+Utils namespaced now
+====================
 Playdar.Util.generate_uuid
 Playdar.Util.toQueryPair
 Playdar.Util.toQueryString
@@ -13,7 +29,3 @@ Playdar.Util.deletecookie
 Playdar.Util.get_window_location
 Playdar.Util.get_window_size
 Playdar.Util.getTarget
-
-Playdar.create() -> Playdar.client
-
-Playdar.player.soundmanager
