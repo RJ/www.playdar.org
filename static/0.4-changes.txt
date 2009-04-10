@@ -1,0 +1,43 @@
+Setup
+=====
+Instead of:
+var playdar = new Playdar();
+playdar.soundmanager = soundManager
+playdar.init();
+
+Use this:
+Playdar.setup();
+Playdar.setup_player(soundManager);
+Playdar.client.init();
+
+Soundmanager wrapper in player namespace now
+============================================
+Playdar.player.play_stream
+Playdar.player.stop_all
+Playdar.player.register_stream
+
+Utils namespaced now
+====================
+Playdar.Util.generate_uuid
+Playdar.Util.toQueryPair
+Playdar.Util.toQueryString
+Playdar.Util.mmss
+Playdar.Util.loadjs
+Playdar.Util.setcookie
+Playdar.Util.getcookie
+Playdar.Util.deletecookie
+Playdar.Util.get_window_location
+Playdar.Util.get_window_size
+Playdar.Util.getTarget
+
+Changed handler names
+=====================
+onStat
+onAuth
+onAuthClear
+onResults
+
+playdarauth.html updated
+
+register_handler(s) renamed to register_listener(s)
+Note: register_results_handler unchanged

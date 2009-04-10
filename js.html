@@ -1,45 +1,51 @@
 <!--#set var="title" value="Playdar - Music Content Resolver" --><!--#include virtual="/inc/header.html" -->
 <h2>Playdar Javascript Library</h2>
 <p>
-    <code>playdar.js</code> is a Javascript library for interacting with the Playdar HTTP API.
+    <strong style="color: red;">Backwards incompatible changes!</strong> <a href="/static/0.4-changes.txt">Notes on version 0.4 refactoring changes</a> - <small><i>10 April 2009</i></small>
+</p>
+<p>
+    <a href="/static/playdar.js"><code>playdar.js</code></a> is a Javascript library for interacting with the Playdar HTTP API.
 </p>
 <p>
     Here's how you use it:
 </p>
 <pre><code>var auth_details = {
     name: "Playdar Documentation",
-    website: "http://www.playdar.org/js.html"
+    website: "http://<!--#echo var="domain" -->/js.html"
 };
-var handlers = {
-    stat: function (detected) {
+var listeners = {
+    onStat: function (detected) {
         if (detected) {
             alert('Playdar detected');
         } else {
             alert('Playdar unavailabled');
         }
     },
-    auth: function () {
+    onAuth: function () {
         alert('Access to Playdar authorised');
     },
-    clear_auth: function () {
+    onAuthClear: function () {
         alert('User revoked authorisation');
     }
 };
 
-var playdar = new Playdar(auth_details, handlers);
-
-playdar.init();
+Playdar.setup(auth_details);
+Playdar.client.register_listeners(listeners);
+Playdar.client.init();
 </code></pre>
 <p>
-    This will setup a <code>Playdar</code> instance with <code>stat</code>, <code>auth</code> and <code>clear_auth</code> handlers.
+    This will setup the Playdar library with authorisation credentials for your domain, and register a series of lifecycle event listeners.
 </p>
 <p>
-    The <code>init()</code> method checks for a running Playdar service. The <code>stat</code> handler is then triggered and if Playdar is detected a status bar appears at the bottom of the window. A user is then able to allow a domain to make use of Playdar. After user authorisation, the <code>auth</code> handler is triggered and you can start querying Playdar. If a user clicks the "Disconnect" link in the status bar, their authorisation will be revoked.
+    The library is separated into modules: <code>client</code>, <code>player</code> and <code>status_bar</code>.
+</p>
+<p>
+    The <code>client.init()</code> method checks for a running Playdar service. The <code>onStat</code> event is then fired and if Playdar is detected a status bar appears at the bottom of the window. A user is then able to allow a domain to make use of Playdar. After user authorisation, the <code>onAuth</code> event is fired and you can start querying Playdar. If a user clicks the "Disconnect" link in the status bar, their authorisation will be revoked and the <code>onAuthClear</code> event is fired.
 </p>
 
 <h3>Advanced authorisation</h3>
 <p>
-    If you'd like to streamline the auth process, you can include a <code>receiverurl</code> in the <code>auth_details</code> object. This should be the URL to the <a href="/demos/playdarauth.html">playdarauth.html</a> file hosted on your domain that receives messages through the location hash and passes it back to a <code>window.opener</code>. An auth token will be sent to this URL after user authorisation so that Playdar can set an auth cookie on your domain.
+    If you'd like to streamline the auth process, you can include a <code>receiverurl</code> in the <code>auth_details</code> object. This should be a URL that points to a <a href="/demos/playdarauth.html">playdarauth.html</a> file hosted on your domain that receives messages through the location hash and passes it back to a <code>window.opener</code>. An auth token will be sent to this URL after user authorisation so that Playdar can set an auth cookie on your domain.
 </p>
 
 <h3>Resolving content</h3>
@@ -47,8 +53,8 @@ playdar.init();
     Searching an available Playdar service for streamable music is a two step process.
 </p>
 <ol>
-    <li>Register a <code>results</code> callback handler.</li>
-    <li>Call the <code>resolve()</code> method with artist, album and track names.</li>
+    <li>Register a results handler.</li>
+    <li>Call the <code>Playdar.client.resolve()</code> method with artist, track (and optionally album) names.</li>
 </ol>
 <pre><code>var results_handler = function (response, final_answer) {
     if (final_answer) {
@@ -60,15 +66,11 @@ playdar.init();
     }
 };
 
-playdar.register_results_handler(results_handler);
-
-playdar.resolve("Weezer", "Pinkerton", "Getchoo");
+Playdar.client.register_results_handler(results_handler);
+Playdar.client.resolve("Weezer", "Pinkerton", "Getchoo");
 </code></pre>
 <p>
-    Note: You can alternatively register the results handler in the <code>new Playdar()</code> constructor, just include it in the <code>handlers</code> object as <code>results</code> along with <code>stat</code> and <code>auth</code>. All handlers passed into the constructor will be passed through <code>register_results_handler</code> internally.
-</p>
-<p>
-    The <code>results</code> handler takes two arguments:
+    Results handlers are called with two arguments:
 </p>
 <ul>
     <li><code>response</code> <i>(JSON)</i> from the <code>get_results</code> API method.</li>
@@ -77,59 +79,81 @@ playdar.resolve("Weezer", "Pinkerton", "Getchoo");
 <p>
     The <code>register_results_handler()</code> and <code>resolve()</code> methods also take an optional final argument, <code>qid</code> which lets you define your own query id, and define custom handlers for content resolution.
 </p>
+<p>
+    Note: You can alternatively register a default results handler along with the other event listeners. Just include an <code>onResults</code> listener when you call <code>register_listeners</code>. This is sometimes more convenient when you don't need custom handlers for each query.
+</p>
 
 <h3>Query history</h3>
 <p>
-    Each <code>resolve()</code> query id is stored in <code>playdar.resolve_qids</code> (with the last one in <code>playdar.last_qid</code> for convenience). So you can easily refetch results by calling <code>get_results()</code> yourself:
+    Each query id passed back from <code>Playdar.client.resolve()</code> calls is stored in <code>Playdar.client.resolve_qids</code> (with the last one in <code>Playdar.client.last_qid</code> for convenience). So you can easily refetch results by calling <code>get_results()</code> yourself:
 </p>
 <pre><code>// Refetch the last query
-playdar.get_results(playdar.last_qid);
+Playdar.client.get_results(Playdar.client.last_qid);
 
 // Refetch the first query
-playdar.get_results(playdar.resolve_qids[0]);
+Playdar.client.get_results(Playdar.client.resolve_qids[0]);
 </code></pre>
 
 <h3>Streaming</h3>
 <p>
-    Once you've got a good result, you can build a streaming url wth <code>get_stream_url()</code>.
+    Once you've got a good result, you can construct a streaming url by calling <code>Playdar.client.get_stream_url()</code> on the sid.
 </p>
-<pre><code>var result = response.results[0];
-alert("Stream URL: " + playdar.get_stream_url(result.sid));
+<pre><code>alert("Stream URL: " + Playdar.client.get_stream_url(result.sid));
 </code></pre>
 
 <p>
-    <code>playdar.js</code> also has a built in wrapper for the <a href="http://www.schillmania.com/projects/soundmanager2/">SoundManager 2 audio library</a>. Simply include the <code>soundmanager2.js</code> file, setup the global <code>soundManager</code> object it creates and register it with your playdar object:
+    The Playdar library also has a built in wrapper for the <a href="http://www.schillmania.com/projects/soundmanager2/">SoundManager 2 audio library</a>, available through the <code>Playdar.player</code> module. Simply include the <code>soundmanager2.js</code> file, configure the global <code>soundManager</code> object it creates and pass it into the <code>Playdar.setup_player</code> function to initialise the <code>Playdar.player</code> module.
 </p>
 <pre><code>soundManager.url = '/path/to/soundmanager2_flash9.swf';
 soundManager.flashVersion = 9;
 soundManager.onload = function () {
-    playdar.init();
+    Playdar.setup_player(soundManager);
+    Playdar.client.init();
 };
-playdar.soundmanager = soundManager;
 </code></pre>
 <p>
-    To avoid a race condition where soundmanager is ready but playdar isn't or vice versa, wait until SM has loaded before calling <code>init</code> on playdar.
+    Since SoundManager works via a flash object that's loaded asynchronously, you need to wait for the soundManager.onload event before calling <code>Playdar.client.init()</code>, or else you may end up calling SoundManager functions before it's ready.
 </p>
 <p>
     You now have a couple of methods available for registering and playing Playdar streams:
 </p>
-<pre><code>// Register a set of result sids for streaming with SoundManager
+<pre><code>
 // register_stream passes options onto SM createSound
-for (var i = 0; i < results.length; i++) {
-    playdar.register_stream(results[i], {
-        onstop: function () {
-            // 'this' refers to the SM Sound object
-            alert('Stopped playing sound: ' + this.sID);
-        }
-    });
-}
+Playdar.player.register_stream(result, {
+    onstop: function () {
+        // Scope of 'this' is a SM Sound object
+        alert('Stopped playing sound: ' + this.sID);
+    }
+});
 
-// Play a registered sid
-// play_stream calls togglePause on the SM Sound object
-function click_handler (sid) {
-    playdar.play_stream(sid);
-}
+// Play a specific sound. Calls togglePause on the SM Sound object
+Playdar.player.play_stream(sid);
+
+// Stop all playing sounds
+Playdar.player.stop_all();
+
+// togglePause on the latest sound
+Playdar.player.toggle_nowplaying();
 </code></pre>
+
+<h3>Utility Functions</h3>
+
+<p>
+    <code>playdar.js</code> defines a few utility functions that are mainly used internally for framework tasks, but you may find them useful:
+</p>
+<ul>
+    <li>Playdar.Util.generate_uuid</li>
+    <li>Playdar.Util.toQueryPair</li>
+    <li>Playdar.Util.toQueryString</li>
+    <li>Playdar.Util.mmss (formats seconds as mm:ss)</li>
+    <li>Playdar.Util.loadjs</li>
+    <li>Playdar.Util.setcookie</li>
+    <li>Playdar.Util.getcookie</li>
+    <li>Playdar.Util.deletecookie</li>
+    <li>Playdar.Util.get_window_position</li>
+    <li>Playdar.Util.get_window_size</li>
+    <li>Playdar.Util.getTarget</li>
+</ul>
 
 </body>
 </html>
