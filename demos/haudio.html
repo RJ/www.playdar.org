@@ -98,7 +98,7 @@ var results_handler = function (response, finalanswer) {
         // update status element:
         $(response.qid).className = 'playdar_found';
         
-        var sound = playdar.register_stream(response.results[0]);
+        var sound = Playdar.player.register_stream(response.results[0]);
         $(response.qid).innerHTML = "<a href=\"#\" title=\""+tt+"\" class=\"playbutton\">" + response.results.length + "<span style=\"display: none;\">" + response.results[0].sid + "</span></a>";
     } else if (finalanswer) {
         $(response.qid).className = 'playdar_notfound';
@@ -106,7 +106,7 @@ var results_handler = function (response, finalanswer) {
     }
 };
 
-var playdar = new Playdar(
+Playdar.create(
     {
         receiverurl: "http://<!--#echo var="domain" -->/demos/playdarauth.html",
         website: "http://<!--#echo var="domain" -->/demos/",
@@ -129,8 +129,8 @@ var playdar = new Playdar(
 soundManager.url = '\/static\/soundmanager2_flash9.swf';
 soundManager.flashVersion = 9;
 soundManager.onload = function () {
-    playdar.soundmanager = soundManager;
-    playdar.init();
+    Playdar.player.soundmanager = soundManager;
+    Playdar.client.init();
 };
 
 function go_microformats() {
@@ -139,7 +139,7 @@ function go_microformats() {
         if (el.match('a.playbutton')) {
             e.stop();
             var sid = el.down('span').innerHTML;
-            playdar.play_stream(sid);
+            Playdar.player.play_stream(sid);
         }
     });
     
@@ -158,7 +158,7 @@ function go_microformats() {
         var uuid = Playdar.Util.generate_uuid();
         // add a "searching..." status :
         divs[i].appendChild(mkstatuselem(uuid)); 
-        playdar.resolve(artist, "", track, uuid);
+        Playdar.client.resolve(artist, "", track, uuid);
     }
 }
 </script>

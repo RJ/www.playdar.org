@@ -53,7 +53,7 @@ var DEMO = {
         $('play' + this.sID).update("Pause");
     },
     setup_stream: function (result) {
-        var sound = DEMO.playdar.register_stream(result, {
+        var sound = Playdar.player.register_stream(result, {
             onplay: DEMO.set_pause_text,
             onpause: DEMO.set_play_text,
             onresume: DEMO.set_pause_text,
@@ -61,7 +61,7 @@ var DEMO = {
                 DEMO.set_play_text.apply(this);
             },
             onfinish: function () {
-                DEMO.playdar.stop_all();
+                Playdar.player.stop_all();
                 DEMO.set_play_text().apply(this);
             }
         });
@@ -97,7 +97,7 @@ var DEMO = {
         tr.insert(td);
         // Info
         td = new Element('td').update(
-            '<a href="' + DEMO.playdar.get_stream_url(result.sid) + '">dl<\/a> '
+            '<a href="' + Playdar.client.get_stream_url(result.sid) + '">dl<\/a> '
             + '<small>('
             + Playdar.Util.mmss(result.duration) + ', '
             + result.mimetype + ', '
@@ -150,7 +150,7 @@ var DEMO = {
     },
     
     clear_results: function () {
-        DEMO.playdar.stop_all();
+        Playdar.player.stop_all();
         $('numresultsspan').innerHTML = '0';
         // clear table of all but first(header) row
         var trs = $$('#resultstbl tr');
@@ -168,7 +168,7 @@ var DEMO = {
         });
         
         DEMO.clear_results();
-        DEMO.playdar.resolve(art, alb, trk);
+        Playdar.client.resolve(art, alb, trk);
     },
     
     clear_event_handlers: function () {
@@ -187,12 +187,12 @@ var DEMO = {
             if (target.match('a.play')) {
                 e.stop();
                 var sid = target.hash.substr(1);
-                var sound = DEMO.playdar.play_stream(sid);
+                var sound = Playdar.player.play_stream(sid);
             }
         });
         $("recheckResults").observe('click', function (e) {
             e.stop();
-            DEMO.playdar.get_last_results();
+            Playdar.client.get_last_results();
         });
         $("clearResults").observe('click', function (e) {
             e.stop();
@@ -222,7 +222,7 @@ var DEMO = {
 };
 
 // Setup Playdar and Sound Manager
-DEMO.playdar = new Playdar({
+Playdar.create({
     receiverurl: "http://<!--#echo var="domain" -->/demos/playdarauth.html",
     website: "http://<!--#echo var="domain" -->/demos/",
     name: "Playdar Demos"
@@ -249,8 +249,8 @@ DEMO.playdar = new Playdar({
 soundManager.url = '\/static\/soundmanager2_flash9.swf';
 soundManager.flashVersion = 9;
 soundManager.onload = function () {
-    DEMO.playdar.soundmanager = soundManager;
-    DEMO.playdar.init();
+    Playdar.player.soundmanager = soundManager;
+    Playdar.client.init();
 };
 </script>
 

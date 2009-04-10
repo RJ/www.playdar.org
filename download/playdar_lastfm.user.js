@@ -46,23 +46,23 @@ function GM_wait() {
 GM_wait(); // wait for playdar.js to load.
 
 function setup_playdar () {
-    var playdar = Playdar.create({
+    Playdar.create({
         name: "Last.fm Greasemonkey",
         website: "http://www.playdar.org/demos/"
     }, {
         auth: function () {
-            insert_play_buttons(playdar);
+            insert_play_buttons();
         }
     });
     soundManager.url = 'http://' + playdar_web_host + '/static/soundmanager2_flash9.swf';
     soundManager.flashVersion = 9;
     soundManager.onload = function () {
-        playdar.init();
+        Playdar.player.soundmanager = soundManager;
+        Playdar.client.init();
     };
-    playdar.soundmanager = soundManager;
 };
 
-function insert_play_buttons (playdar) {
+function insert_play_buttons () {
     // set up a handler for resolved content
     function results_handler (response, finalanswer) {
         if (finalanswer) {
@@ -79,11 +79,11 @@ function insert_play_buttons (playdar) {
                 element.style.backgroundColor = "#0a0";
                 // Just link to the source, too much flash spam:
                 var sid = response.results[0].sid;
-                element.innerHTML = "&nbsp;<a href=\"" + playdar.get_stream_url(sid) + "\" title=\"" + tt + "\" style=\"color: #fff;\">" + response.results.length + "</a>&nbsp;";
-                playdar.register_stream(response.results[0]);
+                element.innerHTML = "&nbsp;<a href=\"" + Playdar.client.get_stream_url(sid) + "\" title=\"" + tt + "\" style=\"color: #fff;\">" + response.results.length + "</a>&nbsp;";
+                Playdar.player.register_stream(response.results[0]);
                 unsafeWindow.Event.observe(element, 'click', function (e) {
                     e.stop();
-                    playdar.play_stream(sid);
+                    Playdar.player.play_stream(sid);
                 });
             } else {
                 element.style.backgroundColor = "#c00";
@@ -91,10 +91,10 @@ function insert_play_buttons (playdar) {
             }
         }
     }
-    resolve_links(playdar, results_handler);
+    resolve_links(results_handler);
 }
 
-function resolve_links (playdar, results_handler) {
+function resolve_links (results_handler) {
     var links = unsafeWindow.$$('a');
     var link_regex = new RegExp(/^\/music\/([^+].*)\/([^+].*)\/([^+].*)/);
     for (var i = 0; i < links.length; i++) {
@@ -124,7 +124,7 @@ function resolve_links (playdar, results_handler) {
         // Replace + with space
         var artist = decodeURIComponent(urlparts[1].replace(/\+/g, " "));
         var track  = decodeURIComponent(urlparts[3].replace(/\+/g, " "));
-        resolve(playdar, links[i], artist, track, results_handler);
+        resolve(links[i], artist, track, results_handler);
     }
 }
 
@@ -148,11 +148,11 @@ function start_status (qid, link) {
     parent.insertBefore(status, parent.firstChild);
 }
 
-function resolve (playdar, link, artist, track, results_handler) {
+function resolve (link, artist, track, results_handler) {
     var qid = Playdar.Util.generate_uuid();
     // add a "searching..." status :
     start_status(qid, link);
     // register results handler and resolve for this qid
-    playdar.register_results_handler(results_handler, qid);
-    playdar.resolve(artist, "", track, qid);
+    Playdar.client.register_results_handler(results_handler, qid);
+    Playdar.client.resolve(artist, "", track, qid);
 }
