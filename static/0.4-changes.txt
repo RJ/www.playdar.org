@@ -1,0 +1,19 @@
+Playdar.player.play_stream
+Playdar.player.stop_all
+Playdar.player.register_stream
+
+Playdar.Util.generate_uuid
+Playdar.Util.toQueryPair
+Playdar.Util.toQueryString
+Playdar.Util.mmss
+Playdar.Util.loadjs
+Playdar.Util.setcookie
+Playdar.Util.getcookie
+Playdar.Util.deletecookie
+Playdar.Util.get_window_location
+Playdar.Util.get_window_size
+Playdar.Util.getTarget
+
+Playdar.create() -> Playdar.client
+
+Playdar.player.soundmanager
