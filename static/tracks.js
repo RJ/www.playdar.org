@@ -96,8 +96,8 @@ PlaydarTracks = {
     
     setup_playdar: function () {
         Playdar.setup({
-            receiverurl: "http://playdar/demos/playdarauth.html",
-            website: "http://playdar/demos/",
+            receiverurl: "http://www.playdar.org/demos/playdarauth.html",
+            website: "http://www.playdar.org/demos/",
             name: "Playdar Demos"
         });
         Playdar.client.register_listeners({
