@@ -93,12 +93,12 @@ var results_handler = function (response, finalanswer) {
         var tt = "Sources: ";
         for (var k = 0; k < response.results.length; ++k) {
             var r = response.results[k];
-            tt += r.source + "/" + r.bitrate + "kbps/" + Playdar.mmss(r.duration) + " ";
+            tt += r.source + "/" + r.bitrate + "kbps/" + Playdar.Util.mmss(r.duration) + " ";
         }
         // update status element:
         $(response.qid).className = 'playdar_found';
         
-        var sound = playdar.register_stream(response.results[0]);
+        var sound = Playdar.player.register_stream(response.results[0]);
         $(response.qid).innerHTML = "<a href=\"#\" title=\""+tt+"\" class=\"playbutton\">" + response.results.length + "<span style=\"display: none;\">" + response.results[0].sid + "</span></a>";
     } else if (finalanswer) {
         $(response.qid).className = 'playdar_notfound';
@@ -106,31 +106,31 @@ var results_handler = function (response, finalanswer) {
     }
 };
 
-var playdar = new Playdar(
-    {
-        receiverurl: "http://<!--#echo var="domain" -->/demos/playdarauth.html",
-        website: "http://<!--#echo var="domain" -->/demos/",
-        name: "Playdar Demos"
-    }, {
-        stat: function (detected) {
-            var text;
-            if (detected) {
-                text = "<b style='color:green;'>Playdar ready</b>";
-            } else {
-                text = "<b style='color:red;'>Playdar unavailable</b><br/>You need Playdar, the music content resolver, installed and running. See <a href=\"http://<!--#echo var="domain" -->/\"><!--#echo var="domain" --></a>.";
-            }
-            $('playdar_stat').update(text);
-        },
-        auth: function () {
-            $('gomicroformats').disabled = false;
-        },
-        results: results_handler
+Playdar.setup({
+    receiverurl: "http://<!--#echo var="domain" -->/demos/playdarauth.html",
+    website: "http://<!--#echo var="domain" -->/demos/",
+    name: "Playdar Demos"
+});
+Playdar.client.register_listeners({
+    onStat: function (detected) {
+        var text;
+        if (detected) {
+            text = "<b style='color:green;'>Playdar ready</b>";
+        } else {
+            text = "<b style='color:red;'>Playdar unavailable</b><br/>You need Playdar, the music content resolver, installed and running. See <a href=\"http://<!--#echo var="domain" -->/\"><!--#echo var="domain" --></a>.";
+        }
+        $('playdar_stat').update(text);
+    },
+    onAuth: function () {
+        $('gomicroformats').disabled = false;
+    },
+    onResults: results_handler
 });
 soundManager.url = '\/static\/soundmanager2_flash9.swf';
 soundManager.flashVersion = 9;
 soundManager.onload = function () {
-    playdar.soundmanager = soundManager;
-    playdar.init();
+    Playdar.setup_player(soundManager);
+    Playdar.client.init();
 };
 
 function go_microformats() {
@@ -139,7 +139,7 @@ function go_microformats() {
         if (el.match('a.playbutton')) {
             e.stop();
             var sid = el.down('span').innerHTML;
-            playdar.play_stream(sid);
+            Playdar.player.play_stream(sid);
         }
     });
     
@@ -155,10 +155,10 @@ function go_microformats() {
     for (var i = 0; i < divs.length; ++i) {
         var artist  = divs[i].select('span.contributor')[0].innerHTML.replace(/^\s+|\s+$/g, '');
         var track   = divs[i].select('span.fn')[0].innerHTML.replace(/^\s+|\s+$/g, '');
-        var uuid = Playdar.generate_uuid();
+        var uuid = Playdar.Util.generate_uuid();
         // add a "searching..." status :
         divs[i].appendChild(mkstatuselem(uuid)); 
-        playdar.resolve(artist, "", track, uuid);
+        Playdar.client.resolve(artist, "", track, uuid);
     }
 }
 </script>
