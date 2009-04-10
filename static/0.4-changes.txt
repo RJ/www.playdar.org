@@ -7,7 +7,7 @@ playdar.init();
 
 Use this:
 Playdar.setup();
-Playdar.player.soundmanager = soundManager
+new Playdar.Player(soundManager);
 Playdar.client.init();
 
 Soundmanager wrapper in player namespace now
@@ -29,3 +29,15 @@ Playdar.Util.deletecookie
 Playdar.Util.get_window_location
 Playdar.Util.get_window_size
 Playdar.Util.getTarget
+
+Changed handler names
+=====================
+onStat
+onAuth
+onAuthClear
+onResults
+
+playdarauth.html updated
+
+register_handler(s) renamed to register_listener(s)
+Note: register_results_handler unchanged

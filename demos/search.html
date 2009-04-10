@@ -226,8 +226,9 @@ Playdar.setup({
     receiverurl: "http://<!--#echo var="domain" -->/demos/playdarauth.html",
     website: "http://<!--#echo var="domain" -->/demos/",
     name: "Playdar Demos"
-}, {
-    stat: function (detected) {
+});
+Playdar.client.register_listeners({
+    onStat: function (detected) {
         var text;
         if (detected) {
             text = "<b style='color:green;'>Playdar ready<\/b>";
@@ -236,20 +237,20 @@ Playdar.setup({
         }
         $('playdar_stat').innerHTML = text;
     },
-    auth: function () {
+    onAuth: function () {
         DEMO.setup_event_handlers();
         DEMO.parse_hash();
     },
-    clear_auth: function () {
+    onAuthClear: function () {
         DEMO.clear_event_handlers();
     },
-    results: DEMO.results_handler
+    onResults: DEMO.results_handler
 });
 
 soundManager.url = '\/static\/soundmanager2_flash9.swf';
 soundManager.flashVersion = 9;
 soundManager.onload = function () {
-    Playdar.player.soundmanager = soundManager;
+    new Playdar.Player(soundManager);
     Playdar.client.init();
 };
 </script>

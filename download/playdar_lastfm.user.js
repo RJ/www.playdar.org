@@ -49,15 +49,14 @@ function setup_playdar () {
     Playdar.setup({
         name: "Last.fm Greasemonkey",
         website: "http://www.playdar.org/demos/"
-    }, {
-        auth: function () {
-            insert_play_buttons();
-        }
+    });
+    Playdar.client.register_listener('onAuth', function () {
+        insert_play_buttons();
     });
     soundManager.url = 'http://' + playdar_web_host + '/static/soundmanager2_flash9.swf';
     soundManager.flashVersion = 9;
     soundManager.onload = function () {
-        Playdar.player.soundmanager = soundManager;
+        new Playdar.Player(soundManager);
         Playdar.client.init();
     };
 };
