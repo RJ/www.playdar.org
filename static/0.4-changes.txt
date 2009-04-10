@@ -7,7 +7,7 @@ playdar.init();
 
 Use this:
 Playdar.setup();
-new Playdar.Player(soundManager);
+Playdar.setup_player(soundManager);
 Playdar.client.init();
 
 Soundmanager wrapper in player namespace now

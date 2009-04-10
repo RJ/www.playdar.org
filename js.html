@@ -99,12 +99,12 @@ Playdar.client.get_results(Playdar.client.resolve_qids[0]);
 </code></pre>
 
 <p>
-    The Playdar library also has a built in wrapper for the <a href="http://www.schillmania.com/projects/soundmanager2/">SoundManager 2 audio library</a>, available through the <code>Playdar.player</code> module. Simply include the <code>soundmanager2.js</code> file, configure the global <code>soundManager</code> object it creates and pass it into the <code>Playdar.Player</code> constructor to initialise the <code>Playdar.player</code> module. (note case difference)
+    The Playdar library also has a built in wrapper for the <a href="http://www.schillmania.com/projects/soundmanager2/">SoundManager 2 audio library</a>, available through the <code>Playdar.player</code> module. Simply include the <code>soundmanager2.js</code> file, configure the global <code>soundManager</code> object it creates and pass it into the <code>Playdar.setup_player</code> function to initialise the <code>Playdar.player</code> module.
 </p>
 <pre><code>soundManager.url = '/path/to/soundmanager2_flash9.swf';
 soundManager.flashVersion = 9;
 soundManager.onload = function () {
-    new Playdar.Player(soundManager);
+    Playdar.setup_player(soundManager);
     Playdar.client.init();
 };
 </code></pre>

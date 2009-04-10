@@ -56,7 +56,7 @@ function setup_playdar () {
     soundManager.url = 'http://' + playdar_web_host + '/static/soundmanager2_flash9.swf';
     soundManager.flashVersion = 9;
     soundManager.onload = function () {
-        new Playdar.Player(soundManager);
+        Playdar.setup_player(soundManager);
         Playdar.client.init();
     };
 };

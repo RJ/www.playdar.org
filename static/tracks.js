@@ -126,7 +126,7 @@ PlaydarTracks = {
         soundManager.url = '/static/soundmanager2_flash9.swf';
         soundManager.flashVersion = 9;
         soundManager.onload = function () {
-            new Playdar.Player(soundManager);
+            Playdar.setup_player(soundManager);
             Playdar.client.init();
         };
     },
