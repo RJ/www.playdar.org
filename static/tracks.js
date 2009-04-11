@@ -102,13 +102,25 @@ PlaydarTracks = {
             name: "Playdar Demos"
         });
         Playdar.client.register_listeners({
-            onStat: function (detected) {
-                if (!detected) {
-                    console.error('Playdar unavailable');
+            onStat: function (response) {
+                var queriesStatus = document.getElementById('queriesStatus');
+                if (response) {
+                    if (!response.authenticated) {
+                        queriesStatus.innerHTML = Playdar.client.get_auth_link_html();
+                    }
+                } else {
+                    queriesStatus.innerHTML = "Playdar unavailable.";
                 }
             },
             onAuth: function () {
+                var queriesStatus = document.getElementById('queriesStatus');
+                queriesStatus.innerHTML = "Loading queries…";
                 PlaydarTracks.load_queries();
+            },
+            onAuthClear: function () {
+                var queriesStatus = document.getElementById('queriesStatus');
+                queriesStatus.innerHTML = Playdar.client.get_auth_link_html();
+                queriesStatus.style.display = '';
             },
             onResults: function (response, final_answer) {
                 if (final_answer) {
@@ -139,28 +151,34 @@ PlaydarTracks = {
         ));
     },
     handle_queries: function (response) {
-        var queryList = document.getElementById('queries');
-        for (var i = 0; i < response.queries.length; i++) {
-            // Build the query list
-            var result = response.queries[i];
-            var list_item = document.createElement('li');
-            list_item.id = "qid" + result.query.qid;
-            list_item.innerHTML = 
-            '<a href="#playlistTracks" class="playlist">'
-                + '<span class="add">+</span><span class="remove">-</span>'
-            + '</a>'
-            + '<a href="#" class="track">'
-                + result.query.artist + ' - ' + result.query.track
-            + '</a>'
-            + '<div class="sources" id="sources' + result.query.qid + '">'
-                + '<p class="sourcesEmpty">Loading results…</p>'
-            + '</div>';
-            queryList.appendChild(list_item);
-            // Get results
-            if (Playdar.status_bar) {
-                Playdar.status_bar.increment_requests();
+        var queriesStatus = document.getElementById('queriesStatus');
+        if (response.queries.length) {
+            queriesStatus.style.display = 'none';
+            var queryList = document.getElementById('queries');
+            for (var i = 0; i < response.queries.length; i++) {
+                // Build the query list
+                var result = response.queries[i];
+                var list_item = document.createElement('li');
+                list_item.id = "qid" + result.query.qid;
+                list_item.innerHTML = 
+                '<a href="#playlistTracks" class="playlist">'
+                    + '<span class="add">+</span><span class="remove">-</span>'
+                + '</a>'
+                + '<a href="#" class="track">'
+                    + result.query.artist + ' - ' + result.query.track
+                + '</a>'
+                + '<div class="sources" id="sources' + result.query.qid + '">'
+                    + '<p class="sourcesEmpty">Loading results…</p>'
+                + '</div>';
+                queryList.appendChild(list_item);
+                // Get results
+                if (Playdar.status_bar) {
+                    Playdar.status_bar.increment_requests();
+                }
+                Playdar.client.get_results(result.query.qid);
             }
-            Playdar.client.get_results(result.query.qid);
+        } else {
+            queriesStatus.innerHTML = "You haven't queried any tracks yet.";
         }
     },
     
