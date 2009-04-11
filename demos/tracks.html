@@ -30,6 +30,11 @@
             color: #335507;
         }
         
+        #viewport {
+            width: 600px;
+            margin: 0 auto;
+        }
+        
         a#head {
             float: right;
             height: 50px;
@@ -151,7 +156,7 @@
         }
         .sources table tbody:active,
         .sources table tbody.playing {
-            background: #d2f380;
+            background: #d2f380 url('/static/track_progress.gif') repeat-y 0 0;
         }
         .sources table td {
             padding: 8px 0 0 8px;
@@ -190,34 +195,40 @@
             width: 70px;
             padding-right: 8px;
         }
+        .sources table td.progress,
         .sources table td.time,
         .sources table td.size,
         .sources table td.bitrate {
             text-align: right;
         }
+        .sources table td.progress {
+            color: #335507;
+        }
     </style>
 </head>
 <body>
-    <a href="/" title="Playdar - Music Content Resolver" id="head">
-        <img alt="Playdar - the Music Content Resolver" src="/static/logo_slug.gif" width="200" height="50"/>
-    </a>
-    
-    <ul id="tabs">
-        <li id="allTracksTab" class="current"><a href="#allTracks">All Tracks</a></span>
-        <li id="playlistTracksTab"><a href="#playlistTracks">Playlist</a></li>
-        <!-- <span>Perfect results</span> -->
-    </ul>
-    
-    <div id="content">
-        <div id="allTracks">
-            <ul id="queries" class="trackList"></ul>
-        </div>
+    <div id="viewport">
+        <a href="/" title="Playdar - Music Content Resolver" id="head">
+            <img alt="Playdar - the Music Content Resolver" src="/static/logo_slug.gif" width="200" height="50"/>
+        </a>
         
-        <div id="playlistTracks" style="display: none;">
-            <p id="playlistEmpty">
-                You haven’t added anything to your playlist yet.
-            </p>
-            <ul id="playlist" class="trackList"></ul>
+        <ul id="tabs">
+            <li id="allTracksTab" class="current"><a href="#allTracks">All Tracks</a></span>
+            <li id="playlistTracksTab"><a href="#playlistTracks">Playlist</a></li>
+            <!-- <span>Perfect results</span> -->
+        </ul>
+        
+        <div id="content">
+            <div id="allTracks">
+                <ul id="queries" class="trackList"></ul>
+            </div>
+            
+            <div id="playlistTracks" style="display: none;">
+                <p id="playlistEmpty">
+                    You haven’t added anything to your playlist yet.
+                </p>
+                <ul id="playlist" class="trackList"></ul>
+            </div>
         </div>
     </div>
     

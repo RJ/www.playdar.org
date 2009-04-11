@@ -95,6 +95,7 @@ PlaydarTracks = {
     },
     
     setup_playdar: function () {
+        Playdar.USE_STATUS_BAR = false;
         Playdar.setup({
             receiverurl: "http://www.playdar.org/demos/playdarauth.html",
             website: "http://www.playdar.org/demos/",
@@ -185,6 +186,21 @@ PlaydarTracks = {
         var trackItem = result.parentNode.parentNode.parentNode;
         trackItem.className = trackItem.className.replace(' playing', '').replace('playing', '');
     },
+    updatePlaybackProgress: function () {
+        var result = document.getElementById('sid' + this.sID);
+        var progress = document.getElementById('progress' + this.sID);
+        // Update the track progress
+        progress.innerHTML = Playdar.Util.mmss(Math.round(this.position/1000));
+        // Update the playback progress bar
+        var duration;
+        if (this.readyState == 3) { // loaded/success
+            duration = this.duration;
+        } else {
+            duration = this.durationEstimate;
+        }
+        var portion_played = this.position / duration;
+        result.style.backgroundPosition = Math.round(portion_played * 570) + "px 0";
+    },
     
     build_results_table: function (response) {
         var score_cell, result;
@@ -196,7 +212,8 @@ PlaydarTracks = {
                 onpause: PlaydarTracks.setResultPaused,
                 onresume: PlaydarTracks.setResultPlaying,
                 onstop: PlaydarTracks.setResultStopped,
-                onfinish: PlaydarTracks.setResultStopped
+                onfinish: PlaydarTracks.setResultStopped,
+                whileplaying: PlaydarTracks.updatePlaybackProgress
             });
             
             if (result.score == 1) {
@@ -207,9 +224,10 @@ PlaydarTracks = {
             results += '<tbody class="result" id="sid' + result.sid + '">'
                 + '<tr class="track">'
                     + '<td class="play"><span>▸</span></td>'
-                    + '<td class="name" colspan="2">'
+                    + '<td class="name">'
                         + result.artist + ' - ' + result.track
                     + '</td>'
+                    + '<td class="progress" id="progress' + result.sid + '"></td>'
                     + '<td class="time">' + Playdar.Util.mmss(result.duration) + '</td>'
                 + '</tr>'
                 + '<tr class="info">'
