@@ -151,15 +151,16 @@
             padding: 0;
             border: 0;
         }
-        .sources table tbody:hover {
-            cursor: default;
-        }
         .sources table tbody.playing,
         .sources table tbody.paused {
             background: #d2f380 url('/static/track_progress.gif') repeat-y 0 0;
         }
         .sources table tbody.paused {
             background-color: #e8f9bb;
+        }
+        .sources table tbody:hover {
+            cursor: pointer;
+            background-color: #d2f380;
         }
         .sources table td {
             padding: 8px 0 0 8px;
