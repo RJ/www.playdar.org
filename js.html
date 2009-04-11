@@ -43,12 +43,12 @@ Playdar.client.init();
     The <code>client.init()</code> method checks for a running Playdar service. The <code>onStat</code> event is then fired and if Playdar is detected a status bar appears at the bottom of the window. A user is then able to allow a domain to make use of Playdar. After user authorisation, the <code>onAuth</code> event is fired and you can start querying Playdar. If a user clicks the "Disconnect" link in the status bar, their authorisation will be revoked and the <code>onAuthClear</code> event is fired.
 </p>
 
-<h3>Advanced authorisation</h3>
+<h3 id="auth">Advanced authorisation</h3>
 <p>
     If you'd like to streamline the auth process, you can include a <code>receiverurl</code> in the <code>auth_details</code> object. This should be a URL that points to a <a href="/demos/playdarauth.html">playdarauth.html</a> file hosted on your domain that receives messages through the location hash and passes it back to a <code>window.opener</code>. An auth token will be sent to this URL after user authorisation so that Playdar can set an auth cookie on your domain.
 </p>
 
-<h3>Resolving content</h3>
+<h3 id="resolving">Resolving content</h3>
 <p>
     Searching an available Playdar service for streamable music is a two step process.
 </p>
@@ -83,7 +83,7 @@ Playdar.client.resolve("Weezer", "Pinkerton", "Getchoo");
     Note: You can alternatively register a default results handler along with the other event listeners. Just include an <code>onResults</code> listener when you call <code>register_listeners</code>. This is sometimes more convenient when you don't need custom handlers for each query.
 </p>
 
-<h3>Query history</h3>
+<h3 id="queries">Query history</h3>
 <p>
     Each query id passed back from <code>Playdar.client.resolve()</code> calls is stored in <code>Playdar.client.resolve_qids</code> (with the last one in <code>Playdar.client.last_qid</code> for convenience). So you can easily refetch results by calling <code>get_results()</code> yourself:
 </p>
@@ -94,7 +94,7 @@ Playdar.client.get_results(Playdar.client.last_qid);
 Playdar.client.get_results(Playdar.client.resolve_qids[0]);
 </code></pre>
 
-<h3>Streaming</h3>
+<h3 id="streaming">Streaming</h3>
 <p>
     Once you've got a good result, you can construct a streaming url by calling <code>Playdar.client.get_stream_url()</code> on the sid.
 </p>
@@ -136,10 +136,26 @@ Playdar.player.stop_all();
 Playdar.player.toggle_nowplaying();
 </code></pre>
 
-<h3>Utility Functions</h3>
+<h3 id="scrobbling">Scrobbling</h3>
 
 <p>
-    <code>playdar.js</code> defines a few utility functions that are mainly used internally for framework tasks, but you may find them useful:
+    Scrobbling works out of the box with the built in player. If you've implemented your own player, you can use the <code>Playdar.Scrobbler</code> module:
+</p>
+<pre><code>
+var scrobbler = new Playdar.Scrobbler();
+scrobbler.start(artist, track, album, duration, track_number, mbid);
+scrobbler.pause();
+scrobbler.resume();
+scrobbler.stop();
+</code></pre>
+<p>
+    Calling these will keep the Playdar daemon's audioscrobbler plugin up to date with your playback process and automatically handle the scrobbling protocol.
+</p>
+
+<h3 id="utility">Utility Functions</h3>
+
+<p>
+    The Playdar library defines a few utility functions that are mainly used internally for framework tasks, but you may find them useful:
 </p>
 <ul>
     <li>Playdar.Util.generate_uuid</li>
