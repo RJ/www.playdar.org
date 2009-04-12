@@ -200,6 +200,10 @@ PlaydarTracks = {
         Playdar.player.stop_all();
         var result = document.getElementById('sid' + this.sID);
         result.className = 'result';
+        result.style.backgroundPosition = "0 0";
+        
+        var progress = document.getElementById('progress' + this.sID);
+        progress.innerHTML = "";
         
         var trackItem = result.parentNode.parentNode.parentNode;
         trackItem.className = trackItem.className.replace(' playing', '').replace('playing', '');
