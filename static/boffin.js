@@ -23,6 +23,25 @@ PlaydarBoffin = {
             PlaydarBoffin.container.innerHTML = "<p>No tags found</p>";
         }
     },
+    tag_click_handler: function (tag) {
+        Playdar.boffin.get_tag_rql(tag);
+    },
+    container_click_handler: function (e) {
+        var target = Playdar.Util.getTarget(e);
+        while (target) {
+            if (target && target.nodeName == 'SPAN') {
+                PlaydarBoffin.tag_click_handler(target.innerHTML);
+                return true;
+            }
+            target = target.parentNode;
+        }
+    },
+    handle_results: function (response) {
+        for (var i = 0; i < response.results.length; i++) {
+            var result = response.results[i];
+            console.log(result.artist + ' - ' + result.track);
+        }
+    },
     setup_playdar: function () {
         Playdar.setup({
             receiverurl: "http://playdar/demos/playdarauth.html",
@@ -46,6 +65,11 @@ PlaydarBoffin = {
             onAuthClear: function () {
                 PlaydarBoffin.container.innerHTML = "<p>" + Playdar.client.get_auth_link_html() + "</p>";
             },
+            onResults: function (response, final_answer) {
+                if (final_answer) {
+                    PlaydarBoffin.handle_results(response);
+                }
+            },
             onTagCloud: PlaydarBoffin.handle_tagcloud
         });
         new Playdar.Boffin();
@@ -58,5 +82,6 @@ PlaydarBoffin = {
     }
 };
 (function () {
+    PlaydarBoffin.container.onclick = PlaydarBoffin.container_click_handler;
     PlaydarBoffin.setup_playdar();
 })();
