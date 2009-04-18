@@ -14,8 +14,9 @@ PlaydarBoffin = {
                 }
                 var weight = (Math.log(percent)-Math.log(1))/maxLog;
                 var fontSize = minFontSize + Math.round((maxFontSize-minFontSize)*weight);
-                var margin = Math.round(fontSize/2);
-                content.push("<span style='font-size: " + fontSize + "px; margin: 0 " + margin + "px " + margin + "px 0;'>" + result.name + "</span>");
+                var marginRight = Math.round(fontSize/2) + "px";
+                var marginBottom = Math.round(fontSize/4) + "px";
+                content.push("<span style='font-size: " + fontSize + "px; margin: 0 " + marginRight + " " + marginBottom + " 0;'>" + result.name + "</span>");
             }
             PlaydarBoffin.container.innerHTML = content.join(' ');
         } else {
