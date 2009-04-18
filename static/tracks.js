@@ -158,6 +158,9 @@ PlaydarTracks = {
             for (var i = 0; i < response.queries.length; i++) {
                 // Build the query list
                 var result = response.queries[i];
+                if (result.query.boffin_tags) {
+                    continue;
+                }
                 var list_item = document.createElement('li');
                 list_item.id = "qid" + result.query.qid;
                 list_item.innerHTML = 
