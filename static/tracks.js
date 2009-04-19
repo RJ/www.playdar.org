@@ -153,14 +153,16 @@ PlaydarTracks = {
     handle_queries: function (response) {
         var queriesStatus = document.getElementById('queriesStatus');
         if (response.queries.length) {
-            queriesStatus.style.display = 'none';
             var queryList = document.getElementById('queries');
+            var results = false;
             for (var i = 0; i < response.queries.length; i++) {
                 // Build the query list
                 var result = response.queries[i];
-                if (result.query.boffin_tags) {
+                // Duck type check for boffin queries
+                if (result.query.boffin_tags || result.query.boffin_rql) {
                     continue;
                 }
+                results = true;
                 var list_item = document.createElement('li');
                 list_item.id = "qid" + result.query.qid;
                 list_item.innerHTML = 
@@ -180,9 +182,12 @@ PlaydarTracks = {
                 }
                 Playdar.client.get_results(result.query.qid);
             }
-        } else {
-            queriesStatus.innerHTML = "You haven't queried any tracks yet.";
+            if (results) {
+                queriesStatus.style.display = 'none';
+                return true;
+            }
         }
+        queriesStatus.innerHTML = "You haven't queried any tracks yet.";
     },
     
     setResultPlaying: function () {
