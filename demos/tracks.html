@@ -90,18 +90,21 @@
         ul.trackList li.open {
             border-color: #c0e95b;
         }
-        ul.trackList a.track {
+        ul.trackList a.item {
             display: block;
             padding: 15px;
             text-decoration: none;
         }
-        ul.trackList li:hover a.track {
+        ul.trackList li.tag a.item {
+            padding-left: 39px;
+        }
+        ul.trackList li:hover a.item {
             background: #d2f380;
         }
-        ul.trackList li.open a.track {
+        ul.trackList li.open a.item {
             background: #c0e95b;
         }
-        ul.trackList li.playing a.track {
+        ul.trackList li.playing a.item {
             background: #c0e95b url('/static/play.png') no-repeat 20px 50%;
         }
         ul.trackList a.playlist {
@@ -210,6 +213,10 @@
         .sources table td.progress {
             color: #335507;
         }
+        
+        #tags a {
+            display: inline-block;
+        }
     </style>
 </head>
 <body>
@@ -219,16 +226,25 @@
         </a>
         
         <ul id="tabs">
-            <li id="allTracksTab" class="current"><a href="#allTracks">All Tracks</a></span>
+            <li id="tagCloudTab"><a href="#tagCloud">Tag Cloud</a></li>
+            <li id="allTracksTab" class="current"><a href="#allTracks">All Tracks</a></li>
             <li id="playlistTracksTab"><a href="#playlistTracks">Playlist</a></li>
             <!-- <span>Perfect results</span> -->
         </ul>
         
         <div id="content">
+            <p id="playdarStatus">
+                Checking Playdar…
+            </p>
+            
+            <div id="tagCloud" style="display: none;">
+                <p id="tagCloudStatus"></p>
+                <div id="tags"></div>
+                <ul id="tagList" class="trackList" style="display: none;"></ul>
+            </div>
+            
             <div id="allTracks">
-                <p id="queriesStatus">
-                    Checking Playdar…
-                </p>
+                <p id="queriesStatus"></p>
                 <ul id="queries" class="trackList"></ul>
             </div>
             
