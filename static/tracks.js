@@ -142,6 +142,7 @@ PlaydarTracks = {
         var target = Playdar.Util.getTarget(e);
         while (target) {
             if (target && target.nodeName == 'A') {
+                target.className = 'selected';
                 return PlaydarTracks.tag_click_handler(target.innerHTML);
             }
             target = target.parentNode;

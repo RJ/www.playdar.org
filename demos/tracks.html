@@ -215,7 +215,19 @@
         }
         
         #tags a {
+            padding: 7px;
             display: inline-block;
+            text-decoration: none;
+            line-height: 1;
+            -moz-border-radius: 5px;
+            -webkit-border-radius: 5px;
+        }
+        #tags a:hover {
+            background: #e8f9bb;
+        }
+        #tags a:active,
+        #tags a.selected {
+            background: #d2f380;
         }
     </style>
 </head>
@@ -226,8 +238,8 @@
         </a>
         
         <ul id="tabs">
-            <li id="tagCloudTab"><a href="#tagCloud">Tag Cloud</a></li>
-            <li id="allTracksTab" class="current"><a href="#allTracks">All Tracks</a></li>
+            <li id="tagCloudTab" class="current"><a href="#tagCloud">Tag Cloud</a></li>
+            <li id="allTracksTab"><a href="#allTracks">All Tracks</a></li>
             <li id="playlistTracksTab"><a href="#playlistTracks">Playlist</a></li>
             <!-- <span>Perfect results</span> -->
         </ul>
@@ -237,13 +249,13 @@
                 Checking Playdar…
             </p>
             
-            <div id="tagCloud" style="display: none;">
+            <div id="tagCloud">
                 <p id="tagCloudStatus"></p>
                 <div id="tags"></div>
                 <ul id="tagList" class="trackList" style="display: none;"></ul>
             </div>
             
-            <div id="allTracks">
+            <div id="allTracks" style="display: none;">
                 <p id="queriesStatus"></p>
                 <ul id="queries" class="trackList"></ul>
             </div>
