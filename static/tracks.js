@@ -172,7 +172,7 @@ PlaydarTracks = {
         return false;
     },
     build_tag_results_list: function (response) {
-        var title = response.query.boffin_rql.replace('tag:', '');
+        var title = response.query.boffin_rql;
         var list_item = document.createElement('li');
         var results = '';
         if (response.results.length) {
