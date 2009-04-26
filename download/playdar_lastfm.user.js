@@ -95,7 +95,7 @@ function insert_play_buttons () {
 
 function resolve_links (results_handler) {
     var links = unsafeWindow.$$('a');
-    var link_regex = new RegExp(/^\/music\/([^+].*)\/([^+].*)\/([^+].*)/);
+    var link_regex = new RegExp(/^\/music\/([^+][^\/]*)\/([^+][^\/]*)\/([^+][^\/]*)/);
     var tracks = {};
     for (var i = 0; i < links.length; i++) {
         // Only match links in the /music path
