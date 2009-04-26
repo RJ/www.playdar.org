@@ -96,6 +96,7 @@ function insert_play_buttons () {
 function resolve_links (results_handler) {
     var links = unsafeWindow.$$('a');
     var link_regex = new RegExp(/^\/music\/([^+].*)\/([^+].*)\/([^+].*)/);
+    var tracks = {};
     for (var i = 0; i < links.length; i++) {
         // Only match links in the /music path
         var path = links[i].pathname;
@@ -105,10 +106,6 @@ function resolve_links (results_handler) {
         // Only match track links
         var urlparts = link_regex.exec(path);
         if (!urlparts) {
-            continue;
-        }
-        // Only match links without a class name (aka virgin links)
-        if (links[i].getAttribute('class') != null) {
             continue;
         }
         // Don't match image links
@@ -123,6 +120,13 @@ function resolve_links (results_handler) {
         // Replace + with space
         var artist = decodeURIComponent(decodeURIComponent(urlparts[1]).replace(/\+/g, " "));
         var track  = decodeURIComponent(decodeURIComponent(urlparts[3]).replace(/\+/g, " "));
+        
+        // Only match tracks once
+        if (tracks[artist] && tracks[artist][track]) {
+            continue;
+        }
+        tracks[artist] = tracks[artist] || {};
+        tracks[artist][track] = true;
         resolve(links[i], artist, track, results_handler);
     }
 }
