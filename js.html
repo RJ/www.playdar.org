@@ -83,6 +83,29 @@ Playdar.client.resolve("Weezer", "Pinkerton", "Getchoo");
     Note: You can alternatively register a default results handler along with the other event listeners. Just include an <code>onResults</code> listener when you call <code>register_listeners</code>. This is sometimes more convenient when you don't need custom handlers for each query.
 </p>
 
+<h3 id="autodetection">Autodetection</h3>
+<p>
+    If you have content marked up with the <a href="http://microformats.org/wiki/haudio">hAudio microformat</a>, you can use the <code>autodetect</code> method to resolve this content.
+</p>
+<p>
+    <code>autodetect</code> takes an optional callback function, that will get called for each track, passing on object containing the artist and track name and the matched element. If the function returns a qid, this will be passed on to the resolve call so you can hook results up to a custom handler.
+</p>
+<pre><code>var track_handler = function (track) {
+    // Track object looks like this
+    // {
+    //    'name': [track_name String],
+    //    'artist':  [artist_name String],
+    //    'element':  [element DOMElement]
+    // }
+    
+    var uuid = Playdar.Util.generate_uuid();
+    track.element.className = 'q' + qid;
+    return qid;
+};
+
+Playdar.client.autodetect(track_handler);
+</code></pre>
+
 <h3 id="queries">Query history</h3>
 <p>
     Each query id passed back from <code>Playdar.client.resolve()</code> calls is stored in <code>Playdar.client.resolve_qids</code> (with the last one in <code>Playdar.client.last_qid</code> for convenience). So you can easily refetch results by calling <code>get_results()</code> yourself:
