@@ -82,7 +82,7 @@ Playdar.client.resolve("Weezer", "Pinkerton", "Getchoo");
 
 <h3 id="autodetection">Autodetection</h3>
 <p>
-    If you have content marked up with the <a href="http://microformats.org/wiki/haudio">hAudio microformat</a>, you can use the <code>autodetect</code> method to resolve this content.
+    If you have content marked up with the <a href="http://microformats.org/wiki/haudio">hAudio microformat</a>, you can use the <code>Playdar.client.autodetect()</code> method to resolve this content.
 </p>
 <p>
     <code>autodetect</code> takes an optional callback function, that will get called for each track, passing an object containing the artist and track name and the matched element. If the function returns a qid, this will be passed on to the resolve call so you can hook results up to a custom handler.
