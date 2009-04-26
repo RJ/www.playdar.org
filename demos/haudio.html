@@ -151,15 +151,12 @@ function go_microformats() {
         return d;
     };
     
-    var divs = $$('div.haudio');
-    for (var i = 0; i < divs.length; ++i) {
-        var artist  = divs[i].select('span.contributor')[0].innerHTML.replace(/^\s+|\s+$/g, '');
-        var track   = divs[i].select('span.fn')[0].innerHTML.replace(/^\s+|\s+$/g, '');
+    Playdar.client.autodetect(function (track) {
         var uuid = Playdar.Util.generate_uuid();
         // add a "searching..." status :
-        divs[i].appendChild(mkstatuselem(uuid)); 
-        Playdar.client.resolve(artist, "", track, uuid);
-    }
+        track.element.appendChild(mkstatuselem(uuid)); 
+        return uuid;
+    });
 }
 </script>
 </body>
