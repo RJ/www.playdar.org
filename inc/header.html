@@ -1,5 +1,9 @@
-<!--#set var="domain" value="www.playdar.org" -->
 <!DOCTYPE HTML>
+<!--#if expr="${domain}" -->
+<!-- do nothing, set in apache config using SetEnv. good for testing on alt. domains -->
+<!--#else-->
+<!--#set var="domain" value="www.playdar.org" -->
+<!--#endif-->
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -27,7 +31,6 @@
         <a href="http://github.com/RJ/playdar/issues" target="bugs">Bug Tracker</a>
         <br/>
         <a href="irc://irc.freenode.net/playdar">IRC (freenode, #playdar)</a>
-
     </div>
     
     <h1>
