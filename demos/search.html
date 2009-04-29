@@ -32,6 +32,7 @@
     <h3 style="margin: 10px 0 5px 0;">Search Results <span style="background-color:lightyellow; padding: 3px;" id="numresultsspan">0</span></h3>
     <table style="width:100%; font-size:85%;" id="resultstbl"><tr style="font-weight: bold;">
         <td>Score</td> 
+        <td>Pref</td> 
         <td style="width:25px;"> </td>
         <td>Artist</td>
         <td>Album</td>
@@ -76,6 +77,10 @@ var DEMO = {
         // Score
         td = new Element('td').update(result.score.toFixed(3));
         tr.insert(td);
+        // Preference
+        td = new Element('td').update(result.preference);
+        tr.insert(td);
+
         // Play
         td = new Element('td').setStyle({width: "50px"}).update(
             '<a href="#' + result.sid + '" id="play' + result.sid + '" class="play">'
