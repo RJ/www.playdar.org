@@ -6,7 +6,7 @@ Playdar has an asynchronous cascading resolver pipeline. Resolvers with the high
 <p>
 Resolver plugins are loaded into the pipeline with a <b>weight</b> and <b>target time</b>. 
 
-The weight is an int between 1-100, and dictates the order in which resolver plugins are queried. The most reliable and fastest resolver has a weight of 100 (ie the one that matches files on your hard disk).
+The weight is an int between 1-100, and signifies a preference; the most reliable and fastest resolver has a weight of 100 (ie the one that matches files on your hard disk).
 </p>
 <p>
 The target time is a millisecond value that the resolver will probably have found results in, if any exist. If a query is still not solved after the target time has elapsed, the query is dispatched to the resolver with the next highest weight. 
@@ -16,23 +16,39 @@ Results are still valid if reported after the targettime, it's simply used to de
 This helps cut down on spam. There's no point in querying the entire internet if you find a result on your hard disk.
 </p>
 <p>
-<strong>Resolvers with equal weights are dispatched to in parallel</strong>, and the smallest targettime of resolvers at that weight is used to decide when to dispatch the query to the next resolver(s).
+Resolvers with equal weights are dispatched to in parallel, and the smallest targettime of resolvers at that weight is used to decide when to dispatch the query to the next resolver(s).
 </p>
 
-<h3>Resolvers</h3>
+<h3>Default Resolver Pipeline</h3>
 <p>
-Currently the local-files resolver and the LAN resolver are fully supported and built by default. This allows you to find files on your hard disk, and from other machines running playdar on your home network.
+Currently the resolver pipeline look like this:
+<table>
+<tr style="font-weight:bold;"><td>Resolver &nbsp; &nbsp; </td><td>Target Time &nbsp; </td><td>Weight</td></tr>
+<tr><td>Local Library</td><td>15ms</td><td>100</td></tr>
+<tr><td>Local Area Network</td><td>50ms</td><td>99</td></tr>
+<tr><td>Demo PHP Script</td><td>20ms</td><td>80</td></tr>
+<tr><td>Darknet</td><td>3000ms</td><td>50</td></tr>
+</table>
 </p>
 <p>
-There are other scripts and plugins available in the contrib/ directory. An example of an external resolver script (writen in PHP) is the magnatune resolver - this resolves against the free online record label magnatune.com.
+You can check how your resolver pipeline is configured by loading the Playdar web interface in your browser once you have it installed. Edit the config file to override the default settings reported by the resolver plugins.
+</p>
+<p>
+The LAN resolver uses UDP multicast on your home/office network, and will audomatically find other Playdar installs. If you install Playdar on two machines at home or in the office, it should just work - you'll be able to play songs from the other machine. 
+</p>
+<p>
+The Demo PHP Resolver is just there to illustrate how you can write resolvers in any scripting language. It is hardcoded to just match one song, and its main purpose is as a tutorial.
+</p>
+<p>
+The Darknet resolver makes tcp connection to IP and port pairs you give it via the web interface. It's early days, but already you can use this to play content from remote machines over the internet.
 </p>
 
 <h3>Write your own Resolver Plugin</h3>
 <p>
 Writing additional resolver plugins is easy. You have two options:
 <ul>
-<li>C++ dynamically loaded libraries, such as <a href="http://github.com/RJ/playdar/tree/master/contrib/demo-plugin">this simple C++ resolver</a>.</li>
-<li>Any scripting language or other program can be spawned as an external process, which Playdar talks to by writing to stdin and reading stdout. <a href="http://github.com/RJ/playdar/tree/master/contrib/demo-script">demo resolver PHP script</a></li>
+<li>C++ dynamically loaded libraries, such as <a href="http://github.com/RJ/playdar/tree/master/playdar-daemon/resolvers/demo">this simple C++ resolver</a>.</li>
+<li>Any scripting language or other program can be spawned as an external process, which Playdar talks to by writing to stdin and reading stdout. <a href="http://github.com/RJ/playdar/blob/master/playdar-daemon/etc/demo-resolver.php">demo resolver PHP script</a></li>
 </ul>
 Consider joining the mailing list or IRC if you are writing a resolver, we'd love to hear about it.
 </p>
@@ -47,10 +63,10 @@ Here are some ideas:
 </p>
 <ul>
     <li>Searching free sources such as magnatune.com or archive.org</li>
-    <li>Got a paid-for Rhapsody or Spotify account? Write a resolver plugin or script to use it.</li>
+    <li>Got a Rhapsody account? A resolver could use their API to play from Rhapsody</li>
     <li>iTunes shared libraries (not sure if this is possible due to silly encryption apple added?)</li>
     <li>UPnP Media Devices</li>
-    <li>Ampache (starting point for this already in contrib/)</li>
+    <li>Seeqpod API</li>
     <li>Any online service that has a search/streaming API</li>
     <li><b>Your idea here</b></li>
 </ul>
