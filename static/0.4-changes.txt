@@ -1,3 +1,9 @@
+0.4.3
+
+Playdar.player.stop_all is now Playdar.player.stop_current as we only keep track of one playing track at a time. Playdar.player.play_stream stops any current tracks before playing.
+
+0.4
+
 Setup
 =====
 Instead of:

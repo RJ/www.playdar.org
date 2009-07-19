@@ -1,7 +1,7 @@
 <!--#set var="title" value="Playdar - Music Content Resolver" --><!--#include virtual="/inc/header.html" -->
 <h2>Playdar Javascript Library</h2>
 <p>
-    <a href="/static/playdar.js"><code>playdar.js</code></a> is a Javascript library for interacting with the Playdar HTTP API.
+    <a href="/static/playdar.js"><code>playdar.js</code></a> (0.4.3 <a href="/static/0.4-changes.txt">revision history</a>) is a Javascript library for interacting with the Playdar HTTP API.
 </p>
 <p>
     Here's how you use it:
@@ -149,11 +149,17 @@ Playdar.player.register_stream(result, {
 // Play a specific sound. Calls togglePause on the SM Sound object
 Playdar.player.play_stream(sid);
 
-// Stop all playing sounds
-Playdar.player.stop_all();
-
-// togglePause on the latest sound
+// togglePause on the current sound
 Playdar.player.toggle_nowplaying();
+
+// Stop the current playing sound
+Playdar.player.stop_current();
+
+// Stops a specific sound if it's now playing
+Playdar.player.stop_stream(sid);
+
+// Whether any sound is playing at the moment
+Playdar.player.is_now_playing();
 </code></pre>
 
 <h3 id="scrobbling">Scrobbling</h3>
@@ -169,7 +175,7 @@ scrobbler.resume();
 scrobbler.stop();
 </code></pre>
 <p>
-    Calling these will keep the Playdar daemon's audioscrobbler plugin up to date with your playback process and automatically handle the scrobbling protocol.
+    Calling these according to the  will keep the Playdar daemon's audioscrobbler plugin up to date with your playback process and automatically handle the scrobbling protocol.
 </p>
 
 <h3 id="utility">Utility Functions</h3>
