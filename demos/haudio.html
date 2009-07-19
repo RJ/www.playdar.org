@@ -10,7 +10,9 @@
     to represent tracks, but you could write a custom parser to find elements on any site
     that represent artist/track names.
 </p>
+<form action="">
 <input type="submit" value="Microformats Go!" id="gomicroformats" onclick="go_microformats()" disabled="disabled" />
+</form>
 <ul id="tracks">
     <li>
         <div class="haudio">
@@ -99,7 +101,7 @@ var results_handler = function (response, finalanswer) {
         $(response.qid).className = 'playdar_found';
         
         var sound = Playdar.player.register_stream(response.results[0]);
-        $(response.qid).innerHTML = "<a href=\"#\" title=\""+tt+"\" class=\"playbutton\">" + response.results.length + "<span style=\"display: none;\">" + response.results[0].sid + "</span></a>";
+        $(response.qid).innerHTML = "<a href=\"#\" title=\""+tt+"\" class=\"playbutton\">" + response.results.length + "<span style=\"display: none;\">" + response.results[0].sid + "<\/span><\/a>";
     } else if (finalanswer) {
         $(response.qid).className = 'playdar_notfound';
         $(response.qid).innerHTML = ':(';
@@ -115,9 +117,9 @@ Playdar.client.register_listeners({
     onStat: function (detected) {
         var text;
         if (detected) {
-            text = "<b style='color:green;'>Playdar ready</b>";
+            text = "<b style='color:green;'>Playdar ready<\/b>";
         } else {
-            text = "<b style='color:red;'>Playdar unavailable</b><br/>You need Playdar, the music content resolver, installed and running. See <a href=\"http://<!--#echo var="domain" -->/\"><!--#echo var="domain" --></a>.";
+            text = "<b style='color:red;'>Playdar unavailable<\/b><br/>You need Playdar, the music content resolver, installed and running. See <a href=\"http://<!--#echo var="domain" -->/\"><!--#echo var="domain" --><\/a>.";
         }
         $('playdar_stat').update(text);
     },
