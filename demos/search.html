@@ -30,16 +30,22 @@
         <a href="#" id="clearResults">clear</a>
     </span>
     <h3 style="margin: 10px 0 5px 0;">Search Results <span style="background-color:lightyellow; padding: 3px;" id="numresultsspan">0</span></h3>
-    <table style="width:100%; font-size:85%;" id="resultstbl"><tr style="font-weight: bold;">
-        <td>Score</td> 
-        <td>Pref</td> 
-        <td style="width:25px;"> </td>
-        <td>Artist</td>
-        <td>Album</td>
-        <td>Track</td>
-        <td>Source</td>
-        <td>Link</td>
-    </tr></table>
+    <table style="width:100%; font-size:85%;" id="resultstbl">
+        <thead>
+            <tr style="font-weight: bold;">
+                <td>Score</td> 
+                <td>Pref</td> 
+                <td style="width:25px;"> </td>
+                <td>Artist</td>
+                <td>Album</td>
+                <td>Track</td>
+                <td>Source</td>
+                <td>Link</td>
+            </tr>
+        </thead>
+        <tbody id="resultstbody">
+        </tbody>
+    </table>
     <br/>
 </div>
 
@@ -70,12 +76,14 @@ var DEMO = {
     },
     
     build_result_row: function (result) {
-        var tr = document.createElement('tr');
+        var tr = new Element('tr');
         tr.id = result.sid;
         
         var td;
         // Score
-        td = new Element('td').update(result.score.toFixed(3));
+        td = new Element('td', {
+            "class": "score"
+        }).update(result.score.toFixed(3));
         tr.insert(td);
         // Preference
         td = new Element('td').update(result.preference);
@@ -119,25 +127,7 @@ var DEMO = {
         if ($(result.sid)) {
             return;
         }
-        var rows = $$('#resultstbl tr');
-        // First result
-        if (rows.length == 1) {
-            $('resultstbl').down('tbody').insert(DEMO.build_result_row(result));
-            return;
-        }
-        // walk rows and insert in score-order
-        for (k = 1; k < rows.length; k++) {
-            var row = rows[k];
-            var rowscore = parseFloat(row.down('td').innerHTML);
-            if (rowscore < result.score) {
-                row.insert({before: DEMO.build_result_row(result)});
-                break;
-            }
-        }
-        // put at the end, lowest so far:
-        if (k == rows.length) {
-            $('resultstbl').down('tbody').insert(DEMO.build_result_row(result));
-        }
+        $('resultstbody').insert(DEMO.build_result_row(result));
     },
     
     // Insert results into the table in order of score:
@@ -147,22 +137,18 @@ var DEMO = {
             qsolved = response.query.solved ? "solved" : "unsolved";
             qsolved = " (" + qsolved + ")";
             $('resolveProgress').hide();
+            $('numresultsspan').update("Found: " + response.results.length + qsolved);
+            response.results.each(DEMO.process_result);
         } else {
             $('resolveProgress').show();
         }
-        $('numresultsspan').update("Found: " + response.results.length + qsolved);
-        response.results.each(DEMO.process_result);
     },
     
     clear_results: function () {
         Playdar.player.stop_current();
         $('numresultsspan').innerHTML = '0';
         // clear table of all but first(header) row
-        var trs = $$('#resultstbl tr');
-        var len = trs.length;
-        for (var i = len-1; i > 0; i--) {
-            $$('#resultstbl tr')[i].remove();
-        }
+        var trs = $('resultstbody').update();
     },
     
     resolve: function (art, alb, trk) {
