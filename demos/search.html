@@ -62,7 +62,7 @@ var DEMO = {
                 DEMO.set_play_text.apply(this);
             },
             onfinish: function () {
-                Playdar.player.stop_all();
+                Playdar.player.stop_current();
                 DEMO.set_play_text().apply(this);
             }
         });
@@ -155,7 +155,7 @@ var DEMO = {
     },
     
     clear_results: function () {
-        Playdar.player.stop_all();
+        Playdar.player.stop_current();
         $('numresultsspan').innerHTML = '0';
         // clear table of all but first(header) row
         var trs = $$('#resultstbl tr');
