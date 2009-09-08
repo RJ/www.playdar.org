@@ -1,86 +1,52 @@
 <!--#set var="title" value="Playdar - Downloads" --><!--#include virtual="/inc/header.html" -->
 <h2>Downloads</h2>
 <p>
-Playdar is under heavy development, so to keep up-to-date you're advised to build from source.
-Binary packages and installers are provided periodically.
+Playdar is under active development, but we do have some binaries available.
+If you are able to compile from source, this is recommended.
 </p>
 
-<h3>Building from source</h3>
-<pre>
-git clone <a href='http://github.com/RJ/playdar/tree/master'>git://github.com/RJ/playdar.git</a>
-cd playdar
-less INSTALL.txt
-cd build
-cmake ..
-make
-</pre>
-<p>If you don't have git, or you don't have all of playdar's deps (check
-INSTALL.txt), read the following instructions as well:
+<hr/>
 
-<h4>Linux</h4>
-eg. Ubuntu:
-<pre>
-apt-get install \
-    sqlite3 libsqlite3-dev \
-    cmake \
-    libtag1-dev \
-    liburiparser1 liburiparser-dev \
-    libossp-uuid-dev libossp-uuid15
-</pre>
-
-Pay special attention to installing uriparser from source, as per INSTALL.txt.
-
-<h4>Mac</h4>
-<p>You need <a href='http://www.macports.org/'>MacPorts</a>:</p>
-<pre>
-    port selfupdate
-    port update installed
-    port install cmake boost ossp-uuid uriparser taglib git-core
-</pre>
-
-Older version of OS X? Try the <a href="http://dsingleton.co.uk/blog/playdar-os-x-10-4">Compiling Playdar on OS X 10.4</a> guide.
-
-<h4>Windows</h4>
-<p>
-We've been building on Windows with Visual Studio 8. Other versions will probably work too. 
-<br/>
-You'll need to find the deps yourself (suggest getting boost from boostpro.com). 
-<br/>
-A project file is in the repo.
-<br/>
-Ask in our IRC channel if you need help.
-</p>
-
-<h4>Running Playdar</h4>
-<p>
-Check the INSTALL.txt, make sure you run from the daemon dir so ./plugins and ./www exist. Create the database the first time by doing <strong>"sqlite3 ./collection.db &lt; etc/schema.sql"</strong>
-</p>
-
-<h3>Binaries</h3>
-<p>
-These <i>will</i> be outdated. Visit the irc channel (Freenode, <a href='irc://irc.freenode.net/#playdar'>#playdar</a>), and check the /topic or ask if there is a newer one. Another option is to check the mailing list or mailing list archives.
-</p>
+<h3>Binaries / Installers</h3>
 
 <h4>Mac (Intel)</h4>
-<a href="http://methylblue.com/playdar/playdar.prefPane.zip">playdar.prefPane.zip</a> (all-in-one System Preferences pane by <a href='http://methylblue.com/'>mxcl</a>, <a href="http://www.methylblue.com/playdar/">old builds</a>)<br/>
-<br/>
+<p>
+<a href="http://www.methylblue.com/playdar/Playdar.prefPane-0.1.5.zip">Playdar.prefPane-0.1.5.zip</a><br/> </br/>
+<!--
+<s><a href="http://methylblue.com/playdar/playdar.prefPane.zip">playdar.prefPane.zip</a> (all-in-one System Preferences pane by <a href='http://methylblue.com/'>mxcl</a>, <a href="http://www.methylblue.com/playdar/">old builds</a>)</s><br/>
+
 <s><a href="playdar-mac-20090301.zip">playdar-mac-20090301.zip</a></s><br/>
 <s><a href="playdar-mac-20090228.zip">playdar-mac-20090228.zip</a> (works, honest!)<br/></s>
 <s><a href="playdar-mac-0.1.0.zip">playdar-mac-0.1.0.zip</a></s>
-
-<h4>Windows</h4>
-<a href="http://www.metabrew.com/misc/Playdar-Installer-7.exe">Playdar Installer</a> (NSIS installer by <a href="http://laurie.denness.net">lozzd</a>)<br/>
-<p>
-NB: windows installer comes with the normal daemon, and a wrapper app:
-<ul>
-<li>Wraps playdar.exe and scanner.exe completely, and shows log output. </li>
-<li>Minimises to tray</li>
-<li>Colour coding of important events in log</li>
-<li>Provides Balloon notifications for events</li>
-</ul>
-If you don't need to use the wrapper, the installer puts the playdar daemon in the install directory too.
+-->
 </p>
 
+<h4>Windows</h4>
+<p>
+<a href="/download/playdar-win-bin-9july09.zip">playdar-win-bin-9july09.zip</a><br/>
+</p>
 
+<h4>Linux</h4>
+<p>
+No packages yet. INSTALL.txt has detailed instructions for ubuntu 9.04, building from source isn't hard.
+</p>
+
+<hr/>
+
+<h3>Building from source</h3>
+<p>
+Get the source from github: <a href='http://github.com/RJ/playdar/tree/master'>git://github.com/RJ/playdar.git</a>.
+</p>
+<p><b>Protip:</b> read the <a href="http://github.com/RJ/playdar/raw/master/INSTALL.txt" target="asd">INSTALL.txt</a> file.</p>
+<p>
+Older version of OS X? Try the <a href="http://dsingleton.co.uk/blog/playdar-os-x-10-4">Compiling Playdar on OS X 10.4</a> guide.
+</p>
+
+<hr/>
+
+<h4>Help!</h4>
+<p>
+Visit the irc channel (Freenode, <a href='irc://irc.freenode.net/#playdar'>#playdar</a>) or mailinglist and say hi..
+</p>
 </body>
 </html>
