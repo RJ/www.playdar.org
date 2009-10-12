@@ -1,23 +1,66 @@
 <!--#set var="title" value="Playdar - Music Content Resolver" --><!--#include virtual="/inc/header.html" -->
 <h2>Playdar Source Code</h2>
 <p>
-Here are the main git trees. Check the network graph on Github to see the contributors.
-
+Check the network graph on Github to see the contributors.
 <ul>
 <li>
-    <a href="http://github.com/RJ/playdar/tree/master">RJ/playdar</a> - the core playdar daemon.
+    <a href="http://github.com/RJ/playdar-core">RJ/playdar-core</a> - the core playdar daemon and modules.
 </li>
 <li>
-    <a href="http://github.com/jwheare/www.playdar.org/tree/master">jwheare/www.playdar.org</a> - source for www.playdar.org and Javascript library.
+    <a href="http://github.com/jwheare/www.playdar.org">jwheare/www.playdar.org</a> - source for www.playdar.org and Javascript library.
+</li>
+</ul>
+<h3>Compiling Playdar</h3>
+Playdar compiles and runs on Windows, Mac and Linux. It's primarily tested on Linux and Mac at the moment, but a proper installer for Windows, and packages for Mac and Linux will be created soon.
+<br/>
+To compile, you'll need:
+<ul>
+<li>A recent version of <a href="http://www.erlang.org/">Erlang</a></li>
+<li>GNU Make</li>
+<li><a href="http://developer.kde.org/~wheeler/taglib.html">TagLib</a> ver 1.5+. (for the audio file scanner)</li>
+<li>Boost headers, specifically string.hpp (for the audio file scanner)</li>
+<li>gcc (for the audio file scanner)</li>
+</ul>
+
+Compiling and running  should be as simple as
+<pre>$ make
+$ cp etc/playdar.conf.example etc/playdar.conf
+$ $EDITOR etc/playdar.conf
+$ ./start-dev.sh</pre>
+You can manually run the command from the .sh script on Windows, or just use cygwin.
+<br/>
+ <br/>
+From the erl shell you can scan your collection by entering (final '.' is required!):
+<pre>library_dets:scan(resolver:resolver_pid(library_dets), "/path/to/your/music").</pre>
+<br/>
+Check http://localhost:60210/ and you should see Playdar running on your machine.
+<br/>
+ <br/>
+<b>TODO:</b> Better instructions, binary packages.
+
+<h3>Help!</h3>
+<p>
+Visit the irc channel (Freenode, <a href='irc://irc.freenode.net/#playdar'>#playdar</a>) or mailinglist and say hi.
+<br/>
+We are mostly in the London/Europe timezone, and would be glad to help you get started.
+</p>
+
+<hr/>
+
+<h4>Legacy Code</h4>
+Older code that is no longer in use, or requires updates to work with newer versions of Playdar.
+<ul>
+<li>
+    <a href="http://github.com/RJ/playdar">RJ/playdar</a> - old C++ codebase. The new Erlang version is much more sexy
 </li>
 <li>
-    <a href="http://github.com/mxcl/playdar-prefpane/tree/master">mxcl/playdar-prefpane</a> - a mac wrapper that runs the playdar daemon and creates a prefpane.
+    <a href="http://github.com/mxcl/playdar-prefpane">mxcl/playdar-prefpane</a> - a mac wrapper that runs the playdar daemon and creates a prefpane.
 </li>
 <li>
-    <a href="http://github.com/lozzd/playdarwin/tree/master">lozzd/playdarwin</a> - a windows wrapper that runs the playdar daemon and create a systray icon.
+    <a href="http://github.com/lozzd/playdarwin">lozzd/playdarwin</a> - a windows wrapper that runs the playdar daemon and create a systray icon.
 </li>
 <li>
-    <a href="http://github.com/mokele/spiffdar/tree/master">mokele/spiffdar</a> - source for spiffdar, an XSPF playlist site that uses playdar.
+    <a href="http://github.com/mokele/spiffdar">mokele/spiffdar</a> - source for spiffdar, an XSPF playlist site that uses playdar.
 </li>
 
 </ul>
