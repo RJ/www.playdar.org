@@ -18,7 +18,6 @@ To compile, you'll need:
 <li>A recent version of <a href="http://www.erlang.org/">Erlang</a></li>
 <li>GNU Make</li>
 <li><a href="http://developer.kde.org/~wheeler/taglib.html">TagLib</a> ver 1.5+. (for the audio file scanner)</li>
-<li>Boost headers, specifically string.hpp (for the audio file scanner)</li>
 <li>gcc (for the audio file scanner)</li>
 </ul>
 
@@ -32,8 +31,10 @@ You can manually run the command from the .sh script on Windows, or just use cyg
  <br/>
 From the erl shell you can scan your collection by entering (final '.' is required!):
 <pre>library_dets:scan(resolver:resolver_pid(library_dets), "/path/to/your/music").</pre>
+Once the scan finishes, you can check how many files it indexed like so:
+<pre>library_dets:stats(resolver:resolver_pid(library_dets)).</pre>
 <br/>
-Check http://localhost:60210/ and you should see Playdar running on your machine.
+Check http://localhost:60210/ and you should see Playdar running on your machine. Also, try the <a href="/demos/">demos</a>.
 <br/>
  <br/>
 <b>TODO:</b> Better instructions, binary packages.
