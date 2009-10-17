@@ -25,16 +25,18 @@ Compiling and running  should be as simple as
 <pre>$ make
 $ cp etc/playdar.conf.example etc/playdar.conf
 $ $EDITOR etc/playdar.conf
-$ ./start-dev.sh</pre>
-You can manually run the command from the .sh script on Windows, or just use cygwin.
+$ ./playdarctl start-debug</pre>
+You can manually run the command from the ctl script on Windows, or just use cygwin.
 <br/>
  <br/>
-From the erl shell you can scan your collection by entering (final '.' is required!):
-<pre>library_dets:scan(resolver:resolver_pid(library_dets), "/path/to/your/music").</pre>
+Open another terminal to the playdar source dir, and scan your collection:
+<pre>./playdarctl scan /path/to/music</pre>
+(Check the terminal playdar is running in to see scanner output)<br/>
 Once the scan finishes, you can check how many files it indexed like so:
-<pre>library_dets:stats(resolver:resolver_pid(library_dets)).</pre>
+<pre>./playdarctl numfiles</pre>
 <br/>
-Check http://localhost:60210/ and you should see Playdar running on your machine. Also, try the <a href="/demos/">demos</a>.
+Check <a href="http://localhost:60210/">http://localhost:60210/</a> and you should see Playdar running on your machine. 
+<br/>Also, try the <a href="/demos/">demos</a> and <a href="http://playlick.com/">Playlick</a> (a webapp using playdar).
 <br/>
  <br/>
 <b>TODO:</b> Better instructions, binary packages.
