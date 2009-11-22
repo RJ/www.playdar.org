@@ -1,0 +1,2 @@
+User-Agent: *
+Disallow: demos/playdarauth.html
